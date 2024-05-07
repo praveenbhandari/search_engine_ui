@@ -1,0 +1,430 @@
+
+/* App.css */
+
+/* Main container layout */
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 100%;
+  margin: 20px auto;
+}
+.accordion-item.even .accordion-header {
+  background-color: #db9797; /* Alternate color for even index headers */
+}
+
+.accordion-item.odd .accordion-header {
+  background-color: #bbcb7f; /* Alternate color for odd index headers */
+}
+.main-container .result-card {
+  margin-bottom: 20px !important;
+}
+
+/* Left and right filter containers */
+/* .left-filters, .right-filters {
+  flex-basis: 150px;
+  margin: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+.filter-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.filter-button {
+  display: block;
+  background-color: #e7e7e7;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  margin-bottom: 5px; /* Space between buttons */
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.85em;
+  transition: background-color 0.2s;
+}
+
+.filter-button:hover {
+  background-color: #d4d4d4;
+}
+
+.filter-button.active {
+  background-color: #5c6bc0;
+  color: white;
+}
+
+
+/* Central content container */
+.central-content {
+  flex-grow: 1;
+  width: 80%;
+  padding: 50px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  align-items: center;
+}
+
+/* Adjust the search container */
+.search-container {
+  max-width: 100%; /* Take the full width of the parent */
+  margin: 0; /* Remove the margin */
+  padding: 0; /* Remove the padding */
+}
+
+/* ...rest of your existing CSS... */
+
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+}
+
+.search-container {
+  max-width: 100%;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex; /* Add flexbox display */
+  flex-direction: column; /* Arrange children elements vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+.search-container h1 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.search-query {
+  width: calc(100% - 22px); /* Account for padding and border */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  color: #ffffff;
+  /* size: 20; */
+  margin-right: 5px;
+}
+
+.search-button {
+  width: 200px; /* Set width for the button */
+  padding: 10px;
+  border: none;
+  background: #5c6bc0;
+  color: white;
+  border-radius: 20px; /* Set border-radius */
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  align-self: center; /* Align button to center */
+}
+
+.search-button:hover {
+  background: #3949ab;
+}
+
+.filter-section {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.court-filters label,
+.year-filter label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.court-filters input[type="checkbox"],
+.year-filter select {
+  margin-right: 10px;
+}
+
+.year-filter select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  background: white;
+  cursor: pointer;
+}
+
+/* Style the dropdown arrow */
+.year-filter select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z" fill="%235c6bc0"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.search-results {
+  margin-top: 20px;
+  text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-container {
+    width: 90%;
+    margin: 30px auto;
+  }
+
+  .search-query,
+  .search-button,
+  .year-filter select {
+    width: calc(100% - 20px);
+  }
+}
+
+/* .result-card {
+  max-width: 800px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+.result-card h3 {
+  margin-top: 0;
+  color: #0056b3;
+}
+
+.result-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #f9f9f9;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.result-card p {
+  font-size: 0.9rem;
+  
+}
+
+.result-card p strong {
+  color: #333;
+}
+
+.result-card a {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  /* margin-top: 15px; */
+  font-size: 0.8rem;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+/* .result-card:hover {
+  transform: scale(1.05);
+  margin: 10px;
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translate(0px, -10px);
+  transition: transform 0.3s ease;
+} */
+
+.result-card a:hover {
+  background-color: #0056b3;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 900px;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+/* Button styling for 'View Document' */
+.result-card button.view-document {
+  padding: 10px 20px;
+  background-color: #0056b3;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.result-card button.view-document:hover,
+.result-card button.view-document:focus {
+  background-color: #003d82;
+  outline: none;
+}
+
+/* Close button styling inside the modal */
+.modal-content button.close-modal {
+  padding: 5px 10px;
+  background-color: #f44336;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  float: right; /* Position the button to the right corner */
+}
+
+.modal-content button.close-modal:hover,
+.modal-content button.close-modal:focus {
+  background-color: #d32f2f;
+  outline: none;
+}
+
+/* Add this to your styles.css file or within a <style> tag in your component */
+.modal-content p {
+  white-space: pre-wrap; /* Preserves whitespace and line breaks */
+}
+
+.keywords-container {
+  margin-top: 10px;
+}
+
+.keyword-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  margin-right: 10px; /* Space between buttons */
+  border-radius: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.3s;
+}
+
+.keyword-button:hover {
+  background-color: #e2e2e2;
+}
+
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-filters, .right-filters {
+  width: 200px; 
+  margin: 10px; 
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.left-filters select,
+.right-filters select {
+  width: 100%; 
+  padding: 8px; 
+  margin-bottom: 10px; 
+  box-sizing: border-box;
+  white-space: normal; 
+}
+
+.toggle {
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch-label {
+  margin-right: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 10px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
