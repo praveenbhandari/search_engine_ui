@@ -47,8 +47,8 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const handleChange = (event) => {
 
     const url = event.target.value;
-    // const get = `http://localhost:8000/get_index/${url}`
-    const get = `http://3.108.219.46/get_index/${url}`
+    // const get = `https://localhost:8000/get_index/${url}`
+    const get = `https://3.108.219.46/get_index/${url}`
 
 
 
@@ -763,15 +763,15 @@ function App() {
 
     // Initialize the RemoteRunnable with your LangChain API endpoint
     // const chain = new RemoteRunnable({
-    //   // url: `https://de7e-110-226-176-227.ngrok-free.app/chat`, // Replace with your actual API endpoint http://localhost:8081/chat
+    //   // url: `https://de7e-110-226-176-227.ngrok-free.app/chat`, // Replace with your actual API endpoint https://localhost:8081/chat
     //   // url: `https://yantra-api-gcp-image-fxhbdhovha-el.a.run.app/chat`
     //   // url: `https://search-engine.lawyantra.com/chat`
-    //   url: `http://localhost:8000/chat`
+    //   url: `https://localhost:8000/chat`
     // });
 
     try {
-      const response = await axios.post('http://3.108.219.46/search', {
-        // const response = await axios.post('http://localhost:8000/search', {
+      const response = await axios.post('https://3.108.219.46/search', {
+        // const response = await axios.post('https://localhost:8000/search', {
         
         query: searchQuery
       });
@@ -857,8 +857,8 @@ function App() {
 
   const fetchSuggestions = useCallback((query) => {
     // Perform the fetch operation
-    // fetch('http://localhost:8000/suggest', {
-    fetch('http://3.108.219.46/suggest', {
+    // fetch('https://localhost:8000/suggest', {
+    fetch('https://3.108.219.46/suggest', {
 
       method: 'POST',
       headers: {
