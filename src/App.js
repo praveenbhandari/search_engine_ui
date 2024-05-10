@@ -7,6 +7,9 @@ import axios from 'axios';
 import Switch from '@mui/material/Switch';
 import Highlighter from "react-highlight-words";
 import LoginModal from "./login";
+import { ClipLoader } from 'react-spinners';
+import ReactGA from 'react-ga4';
+ReactGA.initialize('G-CBKKVT259T');
 
 function formatDate(dateString) {
   if (!dateString || isNaN(Date.parse(dateString))) {
@@ -28,7 +31,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const [is1ModalOpen, set1ModalOpen] = useState(false);
   const [data, setData] = useState("");
   // const [words, setData] = useState("");
-  console.log(item)
+  // console.log(item)
 
   const { metadata } = item[1];
   // console.log(metadata)
@@ -47,11 +50,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const handleChange = (event) => {
 
     const url = event.target.value;
-    // const get = `https://localhost:8000/get_index/${url}`
-    const get = `https://3.108.219.46/get_index/${url}`
-
-
-
+    const get = `http://localhost:8000/get_index/${url}`
     // const get = `https://search-engine.lawyantra.com/get_index/${url}`
 
 
@@ -63,7 +62,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
       .then((response) => {
         setData(response.data);
         set1ModalOpen(true)
-        console.log(response.data)
+        // console.log(response.data)
       })
     // .catch((error) => {
     // setError(error); // Handle error
@@ -340,7 +339,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
             <strong>Document Type:</strong> {keyword}
             </p> : <></>
             ))} */
-            }
+          }
           {
             ["Not found", "Not mentioned", "Not provided"].includes(metadata["Case Summary"]) ? (
               <div>
@@ -398,11 +397,11 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
                   >
                     {/* {keyword}
                      */}
-                     <Highlighter
-                highlightClassName="highlighted-text"
-                searchWords={[firstword]}
-                textToHighlight={keyword}
-              />
+                    <Highlighter
+                      highlightClassName="highlighted-text"
+                      searchWords={[firstword]}
+                      textToHighlight={keyword}
+                    />
                   </button>
                 )
               ))}
@@ -547,7 +546,7 @@ ResultCard.propTypes = {
 };
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(null);
   // const [searchQuery, setSearchQuery] = useState("");
   // const [filters, setFilters] = useState({
   // icj: false,
@@ -559,11 +558,11 @@ function App() {
 
   const [keywo, setkeywo] = useState("null");
   // console.log(uniqueKeywords);
-  
+
   // const [selectedKeywords, setSelectedKeywords] = useState(new Set());
   const [results, setResults] = useState(null);
   const [originalResults, setOriginalResults] = useState(null); // Store the original results
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   // const [score1, setScores] = useState(0);
 
   // const [inputValue, setInputValue] = useState('');
@@ -572,6 +571,7 @@ function App() {
   const [uniqueMonths, setUniqueMonths] = useState([]);
   const [uniqueYears, setUniqueYears] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
+  // const [ipp, setIP] = useState("");
 
   const [uniqueParties, setUniqueParties] = useState([]);
   const [selectedParty, setSelectedParty] = useState(null);
@@ -601,8 +601,26 @@ function App() {
 
   const [searchCount, setSearchCount] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [location, setLocation] = useState("");
+  const [ip, setIp] = useState("");
 
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
+    
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const [s_name, sets_Name] = useState('');
+  const [s_email, sets_Email] = useState('');
+  const [s_phone, sets_Phone] = useState('');
+  const [s_location, sets_Location] = useState('location');
+  const [s_user_id, setUserid] = useState();
+
+  const handleModalOpen = () => setModalShow(true);
+  const handleModalClose = () => setModalShow(false);
+
+
   // function check(val){
   // if (val !== selectedDocumentType) {
   // const filteredVal = val.filter(item => item !== " ");
@@ -612,8 +630,112 @@ function App() {
 
   // }
 
+  // setShowLoginModal(true);
   // useEffect hook for sorting and filtering
+
+  // const getData = async () => {
+  //   const res = await axios.get("https://api.ipify.org/?format=json");
+  //   console.log(res.data);
+  //   setIP(res.data.ip);
+  // };
+
+
+  // useEffect(() => {
+  //   //passing getData method to the lifecycle method
+  //   getData();
+  // }, []);
   useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
+  
+  useEffect(() => {
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+      // if (userData) {
+        sets_Name(userData.name)
+        sets_Email(userData.email)
+        sets_Phone(userData.phone)
+        sets_Location(userData.location)
+        setUserid(userData.user_id)
+        // console.log(s_user_id, s_name, s_email, s_phone, s_location);
+      }
+      // setUser()
+    // }
+  },[]);
+
+  const login = (userData) => {
+    // sessionStorage.setItem('user', JSON.stringify(userData));
+    // const login = (userData) => {
+      console.log("dfghjkjhgfgdx : ",userData)
+      sessionStorage.setItem('user', JSON.stringify(userData));
+      ReactGA.event({
+        category: 'User',
+        action: 'User login'
+      });
+      // setUser(userData);
+    
+      setUser(userData);
+  // 
+    if (userData) {
+      sets_Name(userData.name)
+      sets_Email(userData.email)
+      sets_Phone(userData.phone)
+      sets_Location(userData.location)
+      setUserid(userData.user_id)
+      // setUserid(user.user_id)
+      console.log(s_user_id, s_name, s_email, s_phone, s_location);
+    }  
+    handleModalClose();
+  };
+
+  const logoutUser = () => {
+    sessionStorage.clear();
+    setUser(null);
+    ReactGA.event({
+      category: 'User',
+      action: 'User Logged out'
+    });
+  };
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const response = await axios.get('https://ipinfo.io?token=d30335213fcd76');
+        setLocation(
+          // ip: response.data.ip,
+          response.data.city + " " + response.data.region + " " + response.data.country + " " + response.data.loc
+        );
+        setIp(response.data.ip)
+      } catch (error) {
+        setLocation(prevState => ({
+          ...prevState,
+          errorMessage: 'Error fetching IP information: ' + error.message
+        }));
+      }
+    };
+
+    fetchLocation();
+    // console.log(location)
+
+  }, []);
+  useEffect(() => {
+    
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    // console.log("usseerrrr: ", user);
+    if (user) {
+      sets_Name(user.name)
+      sets_Email(user.email)
+      sets_Phone(user.phone)
+      sets_Location(user.location)
+      setUserid(user.user_id)
+      // console.log(s_user_id, s_name, s_email, s_phone, s_location);
+    }
+  }, []);
+
+
+  useEffect(() => {
+
+    // setShowLoginModal(true);
     if (originalResults) {
       const filteredResults = originalResults.filter(
         (item) =>
@@ -751,7 +873,7 @@ function App() {
     // Uncomment if need this function 
     // Check if the user has exceeded the allowed number of searches
     //  if (searchCount >= MAX_FREE_SEARCHES) {
-    //   // Open the login modal
+    // //   // Open the login modal
     //   setShowLoginModal(true);
     //   return;
     // }
@@ -763,23 +885,25 @@ function App() {
 
     // Initialize the RemoteRunnable with your LangChain API endpoint
     // const chain = new RemoteRunnable({
-    //   // url: `https://de7e-110-226-176-227.ngrok-free.app/chat`, // Replace with your actual API endpoint https://localhost:8081/chat
+    //   // url: `https://de7e-110-226-176-227.ngrok-free.app/chat`, // Replace with your actual API endpoint http://localhost:8081/chat
     //   // url: `https://yantra-api-gcp-image-fxhbdhovha-el.a.run.app/chat`
     //   // url: `https://search-engine.lawyantra.com/chat`
-    //   url: `https://localhost:8000/chat`
+    //   url: `http://localhost:8000/chat`
     // });
 
     try {
-      const response = await axios.post('https://3.108.219.46/search', {
-        // const response = await axios.post('https://localhost:8000/search', {
-        
-        query: searchQuery
-      });
-
-    setLoading(true);
+      // const response = await axios.post('http://3.108.219.46/search', {
+      const response = await axios.post('http://localhost:8000/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
+      // const quer = await axios.post('http://localhost:8000/add_query', {query: searchQuery, ip:ipp});
+      setLoading(true);
       // s
-      console.log(response.data);
-      console.log("---------------------------");
+      ReactGA.event({
+        category: 'User',
+        action: 'searched for '+ searchQuery
+      });
+      // console.log("session :", s_name, s_email, s_phone, s_location);
+      // console.log(response.data);
+      // console.log("---------------------------");
       setResults(response.data[0]);
       setOriginalResults(response.data[0]); // Store the original results
       setkeywo(response.data[1]);
@@ -823,9 +947,9 @@ function App() {
   // }
   // }, []);
 
-  useEffect(() => {
-    handleSearch();
-  }, []);
+  // useEffect(() => {
+  //   handleSearch();
+  // }, []);
 
   // const extractFilterValues = (results) => {
   // const dates = new Set(results.map((item) => item.Date));
@@ -857,9 +981,7 @@ function App() {
 
   const fetchSuggestions = useCallback((query) => {
     // Perform the fetch operation
-    // fetch('https://localhost:8000/suggest', {
-    fetch('https://3.108.219.46/suggest', {
-
+    fetch('http://localhost:8000/suggest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -966,6 +1088,7 @@ function App() {
 
   return (
     <div className="main-container">
+
       {/* login */}
       {/* <LoginModal
         isOpen={showLoginModal}
@@ -973,6 +1096,20 @@ function App() {
         onLogin={handleLoginSuccess}
       /> */}
       <div className="left-filters">
+        <div>
+          {user ? (
+            <div>
+              <h1>Welcome, {user.name}!</h1>
+              <button onClick={logoutUser}>Logout</button>
+            </div>
+          ) : (
+            <div>
+              <button onClick={handleModalOpen}>Open Login</button>
+              <LoginModal show={modalShow} handleClose={handleModalClose} handleLogin={login} />
+            </div>
+          )}
+        </div>
+
         <div className="filter-title">Month</div>
         {/* Date Filters */}
         <select
@@ -1055,7 +1192,14 @@ function App() {
         </div>
         {/* <div>Related Items: {keywo}</div> */}
         <div className="search-results">
-          {!loading && (
+          {loading ? (
+            <div className='spinner'>
+              <ClipLoader size={150} color={"#123abc"} loading={loading} />
+            </div>
+            // <div className="loading-bar">
+            //   Loading...
+            // </div>
+          ) : (
             <div>
               {/* <button onClick={toggleSortMode} className="toggle-button">
  {sortByDate ? 'Sort by Score' : 'Sort by Date'}
@@ -1085,7 +1229,7 @@ function App() {
                     <span className="slider round"></span>
                   </label>
                 </div>
-               {/* <div>
+                {/* <div>
                   <label className="switch-label">Group by Score</label>
                   <label className="switch">
                     <input type="checkbox" checked={group} onChange={togglegroupedMode} />
