@@ -11,6 +11,8 @@ import { ClipLoader } from 'react-spinners';
 import ReactGA from 'react-ga4';
 ReactGA.initialize('G-CBKKVT259T');
 
+import DesktopViewPrompt from './Desktopprompt';
+
 function formatDate(dateString) {
   if (!dateString || isNaN(Date.parse(dateString))) {
     return dateString;
@@ -608,6 +610,7 @@ function App() {
 
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
     
+  const [isVisible, setIsVisible] = useState(false);
 
   const [modalShow, setModalShow] = useState(true);
 
@@ -813,6 +816,27 @@ function App() {
 
   // }, []);
   // Function to toggle sorting mode
+
+  useEffect(() => {
+    const handleResize = () => {
+        if (window.innerWidth <= 768) {
+            setIsVisible(true);  // Show prompt on mobile devices
+        } else {
+            setIsVisible(false);  // Hide prompt on desktops
+        }
+    };
+
+    // Call the function on component mount
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+}, []);
+
+
   useEffect(() => {
     if (results && results.length > 0) {
       const allCaseNames = results.map(item => item[1].metadata["Case Name"] || "Not Available");
@@ -1102,6 +1126,10 @@ function App() {
 
   return (
     <div className="main-container">
+        <div>
+      <DesktopViewPrompt />
+      {/* Other components */}
+    </div>
 
       {/* login */}
       {/* <LoginModal
