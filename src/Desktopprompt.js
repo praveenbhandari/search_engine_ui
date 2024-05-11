@@ -6,29 +6,23 @@ const DesktopViewPrompt = () => {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth <= 768) {
-                setIsVisible(true);  // Show prompt on mobile devices
-            } else {
-                setIsVisible(false);  // Hide prompt on desktops
-            }
+            setIsVisible(window.innerWidth <= 768);  // Condition to display the notification
         };
 
-        // Call the function on component mount
-        handleResize();
+        handleResize();  // Check immediately on load
+        window.addEventListener('resize', handleResize);  // Add resize listener
 
-        // Add event listener for window resize
-        window.addEventListener('resize', handleResize);
-
-        // Cleanup listener on component unmount
-        return () => window.removeEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);  // Cleanup
     }, []);
 
+    if (!isVisible) {
+        return null;  // Return null to render nothing when the condition is not met
+    }
+
     return (
-        isVisible && (
-            <div className="desktop-view-prompt">
-                For the best experience, please use a desktop device.
-            </div>
-        )
+        <div className="full-screen-prompt">
+            For the best experience, please use a desktop device.
+        </div>
     );
 };
 
