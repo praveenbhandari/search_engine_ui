@@ -50,7 +50,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const handleChange = (event) => {
 
     const url = event.target.value;
-    const get = `http://localhost:8000/get_index/${url}`
+    const get = `http://localhost:3000/get_index/${url}`
     // const get = `https://search-engine.lawyantra.com/get_index/${url}`
 
 
@@ -609,7 +609,7 @@ function App() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
     
 
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(true);
 
   const [s_name, sets_Name] = useState('');
   const [s_email, sets_Email] = useState('');
@@ -620,7 +620,16 @@ function App() {
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
 
+//   const handleModalOpen = () => {
+//     setModalShow(true);
+//     document.body.classList.add('modal-open'); // Add the class to body
+// };
 
+// // Function to close the modal and re-enable background interaction
+// const handleModalClose = () => {
+//     // setModalShow(false);
+//     document.body.classList.remove('modal-open'); // Remove the class from body
+// };
   // function check(val){
   // if (val !== selectedDocumentType) {
   // const filteredVal = val.filter(item => item !== " ");
@@ -692,10 +701,13 @@ function App() {
   const logoutUser = () => {
     sessionStorage.clear();
     setUser(null);
+
     ReactGA.event({
       category: 'User',
       action: 'User Logged out'
     });
+    setModalShow(true)
+    // setUser(true)
   };
   useEffect(() => {
     const fetchLocation = async () => {
@@ -981,7 +993,7 @@ function App() {
 
   const fetchSuggestions = useCallback((query) => {
     // Perform the fetch operation
-    fetch('http://localhost:8000/suggest', {
+    fetch('http://localhost:3000/suggest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1097,17 +1109,18 @@ function App() {
       /> */}
       <div className="left-filters">
         <div>
-          {user ? (
-            <div>
-              <h1>Welcome, {user.name}!</h1>
-              <button onClick={logoutUser}>Logout</button>
-            </div>
-          ) : (
-            <div>
-              <button onClick={handleModalOpen}>Open Login</button>
-              <LoginModal show={modalShow} handleClose={handleModalClose} handleLogin={login} />
-            </div>
-          )}
+        {user ? (
+                <div>
+                    <h1>Welcome, {user.name}!</h1>
+                    <button onClick={logoutUser}>Logout</button>
+                    {/* <LoginModal show={modalShow}  handleLogin={login} /> */}
+       
+                </div>
+            ) : (
+                <button onClick={handleModalOpen}>Open Login</button>
+            )}
+            {modalShow && <LoginModal show={modalShow}  handleLogin={login} />}
+       
         </div>
 
         <div className="filter-title">Month</div>
@@ -1366,13 +1379,13 @@ function App() {
                     ))
                 ) : (
                   <p>
-                    No cases found for the selected filters. Please adjust your filters.
+                    No cases found.
                   </p>
                 ))
               )}
               {!groupedResults && !results && (
                 <p>
-                  No cases found for the selected filters. Please adjust your filters.
+                  No cases found.
                 </p>
               )}
             </div>
