@@ -10,6 +10,7 @@
     "@mui/material": "^5.15.17",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.3",
+    "country-telephone-data": "^0.6.3",
     "langchain": "0.0.198",
     "react": "18.2.0",
     "react-bootstrap": "^2.10.2",

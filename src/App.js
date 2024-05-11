@@ -661,6 +661,7 @@ function App() {
   useEffect(() => {
     const userData = sessionStorage.getItem('user');
     if (userData) {
+      setModalShow(false)
       setUser(JSON.parse(userData));
       // if (userData) {
         sets_Name(userData.name)
@@ -1169,6 +1170,7 @@ function App() {
       <div className="central-content">
         <div className="search-container">
           <h1>Human Rights Search</h1>
+          {/* <p>ICC, ICJ, HUDOC/ECHR, UN</p> */}
           {/* Filter UI for Keywords */}
           <input id="querr"
             type="text"

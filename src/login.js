@@ -1,30 +1,56 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
+import { allCountries } from 'country-telephone-data';
 const LoginModal = ({ show, handleLogin }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [location, setLocation] = useState("New York");
-    const [countryCode, setCountryCode] = useState('+91'); 
-    const locations = ["New York", "London", "Mumbai", "Tokyo", "Sydney"];
-   
-    const backend_url= "https://bayvion.cloud"
-    const handleSubmit= async(event) => {
+    // const [countryCode, setCountryCode] = useState('+91');
+    // const locations = ["New York", "London", "Mumbai", "Tokyo", "Sydney"];
+    const locations = ["--",
+        "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+        "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+        "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Côte d'Ivoire",
+        "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros",
+        "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czechia (Czech Republic)", "Democratic Republic of the Congo",
+        "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+        "Estonia", "Eswatini (fmr. 'Swaziland')", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany",
+        "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See", "Honduras",
+        "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica",
+        "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+        "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives",
+        "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia",
+        "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand",
+        "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia (formerly Macedonia)", "Norway", "Oman", "Pakistan", "Palau",
+        "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania",
+        "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
+        "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+        "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname",
+        "Sweden", "Switzerland", "Syria", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago",
+        "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States",
+        "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+    ];
+    const [countryCode, setCountryCode] = useState('0');
+
+
+    const backend_url = "https://bayvion.cloud"
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // console.log(name,email,phone)
         const fullPhone = `${countryCode}${phone}`; // Combine country code and phone number
-    
-        const response = await axios.post(backend_url+'/login', {name: name,email:email,phone:fullPhone,location:location});
-        console.log("response",response.data.message)
+
+        const response = await axios.post(backend_url + '/login', { name: name, email: email, phone: fullPhone, location: location });
+        console.log("response", response.data.message)
         // if (response.data.message == 0){
         //     console.log("serooo")
         //     handleLogin({ name, email, phone, location });
         // }else{
-            console.log("btich", name, email, fullPhone, location, response.data.message)
+        console.log("btich", name, email, fullPhone, location, response.data.message)
 
-            handleLogin({ name, email, fullPhone, location, user_id: response.data.message });
-       
+        handleLogin({ name, email, fullPhone, location, user_id: response.data.message });
+
         // }
         console.log("Session Storage Set:", sessionStorage.getItem('user'));
 
@@ -37,12 +63,12 @@ const LoginModal = ({ show, handleLogin }) => {
         return null;
     }
 
-  
+
     return (
         <div className="login_modal" >
             <div className="login_modal-content" onClick={e => e.stopPropagation()}>
                 {/* <div className="login_modal-header"> */}
-                   <center><h2 className="login_modal-title">Login/Signup</h2></center> 
+                <center><h2 className="login_modal-title">Login/Signup</h2></center>
                 {/* </div> */}
                 <div className="login_modal-body">
                     <form onSubmit={handleSubmit} className="login_form">
@@ -59,24 +85,38 @@ const LoginModal = ({ show, handleLogin }) => {
                             <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required />
                         </div> */}
 
-                            <div style={{ display: 'flex' }}>
-                                <select value={countryCode} onChange={e => setCountryCode(e.target.value)} style={{ width: '30%', marginRight: '10px' }}>
+                        <div style={{ display: 'flex' }}>
+                            {/* <select value={countryCode} onChange={e => setCountryCode(e.target.value)} style={{ width: '30%', marginRight: '10px' }}>
                                     <option value="+1">+1 USA</option>
                                     <option value="+44">+44 UK</option>
                                     <option value="+91">+91 India</option>
                                     <option value="+61">+61 Australia</option>
                                     <option value="+81">+81 Japan</option>
-                                </select>
-                                <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} maxLength="10" required placeholder="Enter phone number" style={{ width: '70%' }} />
-                            </div>
-                            <div className="form_group">
-                                <label htmlFor="location">Location:</label>
-                                <select id="location" value={location} onChange={e => setLocation(e.target.value)} required>
-                                    {locations.map((loc, index) => (
-                                        <option key={index} value={loc}>{loc}</option>
-                                    ))}
-                                </select>
-                            </div>
+                                </select> */}
+                            <select
+                                value={countryCode}
+                                onChange={e => setCountryCode(e.target.value)}
+                                style={{ width: '30%', marginRight: '10px' }}
+                            >
+                                {/* Default option */}
+                                <option value="0">--</option>
+                                {/* Map through all countries to generate options with country first, code after */}
+                                {allCountries.map((country) => (
+                                    <option key={country.iso2} value={`+${country.dialCode} `}>
+                                        {`${country.name} +${country.dialCode}`}
+                                    </option>
+                                ))}
+                            </select>
+                            <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} maxLength="10" required placeholder="Enter phone number" style={{ width: '70%' }} />
+                        </div>
+                        <div className="form_group">
+                            <label htmlFor="location">Location:</label>
+                            <select id="location" value={location} onChange={e => setLocation(e.target.value)} required>
+                                {locations.map((loc, index) => (
+                                    <option key={index} value={loc}>{loc}</option>
+                                ))}
+                            </select>
+                        </div>
                         <button type="submit" className="login_button">Login</button>
                     </form>
                 </div>
