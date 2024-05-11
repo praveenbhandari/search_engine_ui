@@ -50,7 +50,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const handleChange = (event) => {
 
     const url = event.target.value;
-    const get = `http://localhost:3000/get_index/${url}`
+    const get = backend_url+`/get_index/${url}`
     // const get = `https://search-engine.lawyantra.com/get_index/${url}`
 
 
@@ -619,6 +619,7 @@ function App() {
 
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
+  const backend_url= "https://bayvion.cloud"
 
 //   const handleModalOpen = () => {
 //     setModalShow(true);
@@ -905,8 +906,8 @@ function App() {
 
     try {
       // const response = await axios.post('http://3.108.219.46/search', {
-      const response = await axios.post('http://localhost:8000/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
-      // const quer = await axios.post('http://localhost:8000/add_query', {query: searchQuery, ip:ipp});
+      const response = await axios.post(backend_url+'/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
+      // const quer = await axios.post(backend_url+'/add_query', {query: searchQuery, ip:ipp});
       setLoading(true);
       // s
       ReactGA.event({
@@ -993,7 +994,7 @@ function App() {
 
   const fetchSuggestions = useCallback((query) => {
     // Perform the fetch operation
-    fetch('http://localhost:3000/suggest', {
+    fetch(backend_url+'/suggest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

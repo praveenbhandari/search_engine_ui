@@ -8,13 +8,14 @@ const LoginModal = ({ show, handleLogin }) => {
     const [location, setLocation] = useState("New York");
     const [countryCode, setCountryCode] = useState('+91'); 
     const locations = ["New York", "London", "Mumbai", "Tokyo", "Sydney"];
-
+   
+    const backend_url= "https://bayvion.cloud"
     const handleSubmit= async(event) => {
         event.preventDefault();
         // console.log(name,email,phone)
         const fullPhone = `${countryCode}${phone}`; // Combine country code and phone number
     
-        const response = await axios.post('http://localhost:8000/login', {name: name,email:email,phone:fullPhone,location:location});
+        const response = await axios.post(backend_url+'/login', {name: name,email:email,phone:fullPhone,location:location});
         console.log("response",response.data.message)
         // if (response.data.message == 0){
         //     console.log("serooo")
