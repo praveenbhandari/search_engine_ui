@@ -35,7 +35,7 @@ const LoginModal = ({ show, handleLogin }) => {
     const [countryCode, setCountryCode] = useState('0');
 
 
-    const backend_url = "https://bayvion.cloud"
+    const backend_url = "https://13.201.232.110"
     const handleSubmit = async (event) => {
         event.preventDefault();
         // console.log(name,email,phone)
@@ -103,11 +103,14 @@ const LoginModal = ({ show, handleLogin }) => {
                                 {/* Map through all countries to generate options with country first, code after */}
                                 {allCountries.map((country) => (
                                     <option key={country.iso2} value={`+${country.dialCode} `}>
-                                        {`${country.name} +${country.dialCode}`}
+                                        {`+${country.dialCode}`}
                                     </option>
                                 ))}
                             </select>
-                            <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} maxLength="10" required placeholder="Enter phone number" style={{ width: '70%' }} />
+                            <input type="tel" id="phone" value={phone} onChange={e => {
+                                const phoneNumber = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                setPhone(phoneNumber);
+                            }} maxLength="10" required placeholder="Enter phone number" style={{ width: '70%' }} />
                         </div>
                         <div className="form_group">
                             <label htmlFor="location">Location:</label>

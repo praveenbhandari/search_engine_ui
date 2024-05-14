@@ -7,9 +7,13 @@ import axios from 'axios';
 import Switch from '@mui/material/Switch';
 import Highlighter from "react-highlight-words";
 import LoginModal from "./login";
+
+import Lottie from "lottie-react";
 import { ClipLoader } from 'react-spinners';
 import ReactGA from 'react-ga4';
 ReactGA.initialize('G-CBKKVT259T');
+
+import nopage from "./lottie/nopg.json";
 
 import DesktopViewPrompt from './Desktopprompt';
 
@@ -52,7 +56,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
   const handleChange = (event) => {
 
     const url = event.target.value;
-    const get = backend_url+`/get_index/${url}`
+    const get = backend_url + `/get_index/${url}`
     // const get = `https://search-engine.lawyantra.com/get_index/${url}`
 
 
@@ -609,7 +613,7 @@ function App() {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
-    
+
   const [isVisible, setIsVisible] = useState(false);
 
   const [modalShow, setModalShow] = useState(true);
@@ -622,18 +626,18 @@ function App() {
 
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
-  const backend_url= "https://bayvion.cloud"
+  const backend_url = "https://13.201.232.110"
 
-//   const handleModalOpen = () => {
-//     setModalShow(true);
-//     document.body.classList.add('modal-open'); // Add the class to body
-// };
+  //   const handleModalOpen = () => {
+  //     setModalShow(true);
+  //     document.body.classList.add('modal-open'); // Add the class to body
+  // };
 
-// // Function to close the modal and re-enable background interaction
-// const handleModalClose = () => {
-//     // setModalShow(false);
-//     document.body.classList.remove('modal-open'); // Remove the class from body
-// };
+  // // Function to close the modal and re-enable background interaction
+  // const handleModalClose = () => {
+  //     // setModalShow(false);
+  //     document.body.classList.remove('modal-open'); // Remove the class from body
+  // };
   // function check(val){
   // if (val !== selectedDocumentType) {
   // const filteredVal = val.filter(item => item !== " ");
@@ -660,37 +664,37 @@ function App() {
   useEffect(() => {
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
-  
+
   useEffect(() => {
     const userData = sessionStorage.getItem('user');
     if (userData) {
       setModalShow(false)
       setUser(JSON.parse(userData));
       // if (userData) {
-        sets_Name(userData.name)
-        sets_Email(userData.email)
-        sets_Phone(userData.phone)
-        sets_Location(userData.location)
-        setUserid(userData.user_id)
-        // console.log(s_user_id, s_name, s_email, s_phone, s_location);
-      }
-      // setUser()
+      sets_Name(userData.name)
+      sets_Email(userData.email)
+      sets_Phone(userData.phone)
+      sets_Location(userData.location)
+      setUserid(userData.user_id)
+      // console.log(s_user_id, s_name, s_email, s_phone, s_location);
+    }
+    // setUser()
     // }
-  },[]);
+  }, []);
 
   const login = (userData) => {
     // sessionStorage.setItem('user', JSON.stringify(userData));
     // const login = (userData) => {
-      console.log("dfghjkjhgfgdx : ",userData)
-      sessionStorage.setItem('user', JSON.stringify(userData));
-      ReactGA.event({
-        category: 'User',
-        action: 'User login'
-      });
-      // setUser(userData);
-    
-      setUser(userData);
-  // 
+    console.log("dfghjkjhgfgdx : ", userData)
+    sessionStorage.setItem('user', JSON.stringify(userData));
+    ReactGA.event({
+      category: 'User',
+      action: 'User login'
+    });
+    // setUser(userData);
+
+    setUser(userData);
+    // 
     if (userData) {
       sets_Name(userData.name)
       sets_Email(userData.email)
@@ -699,7 +703,7 @@ function App() {
       setUserid(userData.user_id)
       // setUserid(user.user_id)
       console.log(s_user_id, s_name, s_email, s_phone, s_location);
-    }  
+    }
     handleModalClose();
   };
 
@@ -736,7 +740,7 @@ function App() {
 
   }, []);
   useEffect(() => {
-    
+
     const user = JSON.parse(sessionStorage.getItem('user'));
     // console.log("usseerrrr: ", user);
     if (user) {
@@ -819,11 +823,11 @@ function App() {
 
   useEffect(() => {
     const handleResize = () => {
-        if (window.innerWidth <= 768) {
-            setIsVisible(true);  // Show prompt on mobile devices
-        } else {
-            setIsVisible(false);  // Hide prompt on desktops
-        }
+      if (window.innerWidth <= 768) {
+        setIsVisible(true);  // Show prompt on mobile devices
+      } else {
+        setIsVisible(false);  // Hide prompt on desktops
+      }
     };
 
     // Call the function on component mount
@@ -834,7 +838,7 @@ function App() {
 
     // Cleanup listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
-}, []);
+  }, []);
 
 
   useEffect(() => {
@@ -931,13 +935,13 @@ function App() {
 
     try {
       // const response = await axios.post('http://3.108.219.46/search', {
-      const response = await axios.post(backend_url+'/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
+      const response = await axios.post(backend_url + '/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
       // const quer = await axios.post(backend_url+'/add_query', {query: searchQuery, ip:ipp});
       setLoading(true);
       // s
       ReactGA.event({
         category: 'User',
-        action: 'searched for '+ searchQuery
+        action: 'searched for ' + searchQuery
       });
       // console.log("session :", s_name, s_email, s_phone, s_location);
       // console.log(response.data);
@@ -1019,7 +1023,7 @@ function App() {
 
   const fetchSuggestions = useCallback((query) => {
     // Perform the fetch operation
-    fetch(backend_url+'/suggest', {
+    fetch(backend_url + '/suggest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1126,10 +1130,10 @@ function App() {
 
   return (
     <div className="main-container">
-        <div>
-      <DesktopViewPrompt />
-      {/* Other components */}
-    </div>
+      <div>
+        <DesktopViewPrompt />
+        {/* Other components */}
+      </div>
 
       {/* login */}
       {/* <LoginModal
@@ -1139,18 +1143,18 @@ function App() {
       /> */}
       <div className="left-filters">
         <div>
-        {user ? (
-                <div>
-                    <h1>Welcome, {user.name}!</h1>
-                    <button onClick={logoutUser}>Logout</button>
-                    {/* <LoginModal show={modalShow}  handleLogin={login} /> */}
-       
-                </div>
-            ) : (
-                <button onClick={handleModalOpen}>Open Login</button>
-            )}
-            {modalShow && <LoginModal show={modalShow}  handleLogin={login} />}
-       
+          {user ? (
+            <div>
+              <h1>Welcome, {user.name}!</h1>
+              <button onClick={logoutUser}>Logout</button>
+              {/* <LoginModal show={modalShow}  handleLogin={login} /> */}
+
+            </div>
+          ) : (
+            <button onClick={handleModalOpen}>Open Login</button>
+          )}
+          {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
+
         </div>
 
         <div className="filter-title">Month</div>
@@ -1238,7 +1242,9 @@ function App() {
         <div className="search-results">
           {loading ? (
             <div className='spinner'>
-              <ClipLoader size={150} color={"#123abc"} loading={loading} />
+
+              <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+              {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
             </div>
             // <div className="loading-bar">
             //   Loading...
@@ -1251,6 +1257,7 @@ function App() {
  <button onClick={togglegroupedMode} className="toggle-button">
  {group ? "Normal" : 'Sort by group'}
  </button> */}
+              <div>
               <div className="toggle">
                 <div>
                   <label className="switch-label">Sort by Date</label>
@@ -1280,7 +1287,7 @@ function App() {
                     <span className="slider round"></span>
                   </label>
                 </div>*/}
-              </div>
+              </div></div>
 
               {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
 

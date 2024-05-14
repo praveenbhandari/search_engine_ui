@@ -11,10 +11,35 @@
 }
 
 .spinner {
+  /* background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100%; /* Center spinner vertically in the .app div */
+  align-items: center; */
+  /* background-color: rgba(0, 0, 0, 0.945);
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+
+  display: inline-flexbox;
+  justify-content: center;
+  align-items: center; 
+  /* height: 40px;  */
+  /* width: 40px; */
+  padding-left: 250px;
+  padding-right: 250px;
+
+  /* position: absolute; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 400px;
+  width: 400px;  
 }
 
 
@@ -38,6 +63,10 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 } */
+
+.filter-group select {
+  margin-right: 10px; /* Adjust spacing between selects */
+}
 
 .filter-title {
   font-size: 1.1em;
@@ -122,6 +151,7 @@ body {
 .search-container h1 {
   color: #333;
   margin-bottom: 30px;
+  /* margin-top: 0px; */
 }
 
 .search-query {
@@ -352,6 +382,88 @@ body.modal-open {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+.sort-container {
+  padding-top: 20px;
+  display: flex;
+  /* justify-content: space-between; */
+  margin-bottom: 20px;
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+}
+
+.sort-option + .sort-option {
+  margin-left: 20px;
+}
+
+.switch-label {
+  margin-right: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 10px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.sort-direction {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  text-decoration: underline;
+  margin-left: 10px;
+}
+
+.sort-direction:hover {
+  color: #0056b3;
+}
 
 .login_button:hover {
   background-color: #004494;
@@ -465,11 +577,11 @@ body.modal-open {
 
 
 .filters-container {
-  display: flex;
+  display: grid;
   justify-content: space-between;
 }
 
-.left-filters, .right-filters {
+.left-filters {
   width: 200px; 
   margin: 10px; 
   background: #ffffff;
@@ -478,7 +590,18 @@ body.modal-open {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
+.right-filters {
+  width: 200px; 
+  margin: 10px; 
+  /* background: #ffffff; */
+  padding: 10px;
+  border-radius: 8px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  overflow: hidden;
+}
 
+
+sudo certbot --nginx -d search-engine.humanrightsdossier.com -d www.search-engine.humanrightsdossier.com
 .left-filters select,
 .right-filters select {
   width: 100%; 
@@ -555,7 +678,7 @@ input:checked + .slider:before {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.95);
   color: white;
   text-align: center;
   padding: 15px;
