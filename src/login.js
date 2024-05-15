@@ -35,7 +35,7 @@ const LoginModal = ({ show, handleLogin }) => {
     const [countryCode, setCountryCode] = useState('0');
 
 
-    const backend_url = "https://13.201.232.110"
+    const backend_url = "https://api.humanrightsdossier.com"
     const handleSubmit = async (event) => {
         event.preventDefault();
         // console.log(name,email,phone)
