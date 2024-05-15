@@ -7,21 +7,32 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@nextui-org/navbar": "^2.0.30",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.3",
     "country-telephone-data": "^0.6.3",
+    "install": "^0.13.0",
     "langchain": "0.0.198",
     "lottie-react": "^2.4.0",
+    "npm": "^10.7.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "18.2.0",
     "react-ga4": "^2.1.0",
     "react-highlight-words": "^0.20.0",
-    "react-icons": "^5.0.1",
+    "react-icons": "^5.2.1",
     "react-lottie": "^1.2.4",
-    "react-scripts": "5.0.1",
-    "react-spinners": "^0.13.8"
+    "react-scripts": "^5.0.1",
+    "react-spinners": "^0.13.8",
+    "save": "^2.9.0",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -29,7 +40,8 @@
     "@types/react-dom": "18.0.9",
     "eslint-plugin-react": "^7.33.2",
     "loader-utils": "3.2.1",
-    "typescript": "4.4.2"
+    "tailwindcss": "^3.4.3",
+    "typescript": "^3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

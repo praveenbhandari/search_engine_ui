@@ -1,18 +1,47 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 /* App.css */
 
 /* Main container layout */
 .main-container {
   display: flex;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   justify-content: space-between;
   align-items: flex-start;
   max-width: 100%;
   margin: 20px auto;
 }
 
+.spinner {
+  /* background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+  /* background-color: rgba(0, 0, 0, 0.945);
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+
+  display: inline-flexbox;
+  justify-content: center;
+  align-items: center; 
+  /* height: 40px;  */
+  /* width: 40px; */
+  padding-left: 250px;
+  padding-right: 250px;
+
+  /* position: absolute; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 400px;
+  width: 400px;  
+}
 
 
 .accordion-item.even .accordion-header {
@@ -25,6 +54,16 @@
 .main-container .result-card {
   margin-bottom: 20px !important;
 }
+
+/* Left and right filter containers */
+/* .left-filters, .right-filters {
+  flex-basis: 150px;
+  margin: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
 
 .filter-group select {
   margin-right: 10px; /* Adjust spacing between selects */
@@ -71,13 +110,12 @@
 
 /* Central content container */
 .central-content {
-  /* position: ; */
   flex-grow: 1;
   width: 80%;
   padding: 50px;
   background: #fff;
   border-radius: 8px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   align-items: center;
 }
@@ -87,7 +125,6 @@
   max-width: 100%; /* Take the full width of the parent */
   margin: 0; /* Remove the margin */
   padding: 0; /* Remove the padding */
-  align-items: center;
 }
 
 /* ...rest of your existing CSS... */
@@ -97,43 +134,16 @@ body {
   font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
-  background: #ffffff;
+  background: #f4f4f4;
 }
 
-.spinner {
-  /* background-color: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* background-color: rgba(0, 0, 0, 0.945);
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-
-  /* display: inline-flexbox; */
-  justify-content: center;
-  align-items: center; 
-  /* height: 40px;  */
-  /* width: 40px; */
-  /* padding-left: 250px;
-  padding-right: 250px; */
-
-  height: 400px;
-  width: 400px;  
-}
 .search-container {
   max-width: 100%;
   margin: 50px auto;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex; /* Add flexbox display */
   flex-direction: column; /* Arrange children elements vertically */
   align-items: center; /* Center items horizontally */
@@ -252,7 +262,7 @@ body {
   margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: #ffffff;
+  background: #f9f9f9;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -578,7 +588,7 @@ input:checked + .slider:before {
   background: #ffffff;
   padding: 10px;
   border-radius: 8px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 .right-filters {
@@ -592,6 +602,7 @@ input:checked + .slider:before {
 }
 
 
+sudo certbot --nginx -d search-engine.humanrightsdossier.com -d www.search-engine.humanrightsdossier.com
 .left-filters select,
 .right-filters select {
   width: 100%; 
