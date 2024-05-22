@@ -35,7 +35,8 @@ const LoginModal = ({ show, handleLogin }) => {
     const [countryCode, setCountryCode] = useState('0');
 
 
-    const backend_url = "https://api.humanrightsdossier.com"
+    // const backend_url = "https://api.humanrightsdossier.com"
+    const backend_url = "http://127.0.0.1:8000"
     const handleSubmit = async (event) => {
         event.preventDefault();
         // console.log(name,email,phone)
@@ -68,24 +69,24 @@ const LoginModal = ({ show, handleLogin }) => {
         <div className="login_modal" >
             <div className="login_modal-content" onClick={e => e.stopPropagation()}>
                 {/* <div className="login_modal-header"> */}
-                <center><h2 className="login_modal-title">Login/Signup</h2></center>
+                <center><h2 className="login_modal-title"><strong>Login/Signup</strong></h2></center>
                 {/* </div> */}
                 <div className="login_modal-body">
                     <form onSubmit={handleSubmit} className="login_form">
                         <div className="form_group">
-                            <label htmlFor="name">Name:</label>
-                            <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} required />
+                            <label htmlFor="name">Name: </label>
+                            <input placeholder='Enter your full name' type="text" id="name" value={name}  onChange={e => setName(e.target.value)} required />
                         </div>
                         <div className="form_group">
                             <label htmlFor="email">Email:</label>
-                            <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                            <input placeholder='Enter your email address' type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
                         </div>
-                        {/* <div className="form_group">
-                            <label htmlFor="phone">Phone:</label>
-                            <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required />
-                        </div> */}
+                        <div className="form_group">
+                            <label htmlFor="phone">Phone Number:</label>
+                            {/* <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required /> */}
+                        </div>
 
-                        <div style={{ display: 'flex' }}>
+                        <div className="form_group" style={{ display: 'flex' }}>
                             {/* <select value={countryCode} onChange={e => setCountryCode(e.target.value)} style={{ width: '30%', marginRight: '10px' }}>
                                     <option value="+1">+1 USA</option>
                                     <option value="+44">+44 UK</option>
@@ -110,11 +111,12 @@ const LoginModal = ({ show, handleLogin }) => {
                             <input type="tel" id="phone" value={phone} onChange={e => {
                                 const phoneNumber = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
                                 setPhone(phoneNumber);
-                            }} maxLength="10" required placeholder="Enter phone number" style={{ width: '70%' }} />
+                            }} maxLength="10" required placeholder="Enter your phone number" style={{ width: '70%',padding:'5px' }} />
                         </div>
                         <div className="form_group">
                             <label htmlFor="location">Location:</label>
-                            <select id="location" value={location} onChange={e => setLocation(e.target.value)} required>
+                            <select className="border border-black rounded-lg text-gray-700 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    id="location" value={location} onChange={e => setLocation(e.target.value)} required>
                                 {locations.map((loc, index) => (
                                     <option key={index} value={loc}>{loc}</option>
                                 ))}
