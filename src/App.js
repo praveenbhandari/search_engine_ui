@@ -285,7 +285,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
             <DocumentModal
               content={
                 <>
-                  {{'page':page_content,'meta':metadata}}
+                  {{ 'page': page_content, 'meta': metadata }}
                   {/* <Highlighter
                     highlightClassName="highlighted-text"
                     searchWords={searchRegexes}
@@ -476,7 +476,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
             <DocumentModal
               content={
                 <>
-                  {{'page':page_content,'meta':metadata}}
+                  {{ 'page': page_content, 'meta': metadata }}
                   {/* <Highlighter
                     highlightClassName="highlighted-text"
                     searchWords={searchRegexes}
@@ -546,15 +546,18 @@ function handleKeywordClick(keyword) {
 }
 
 function DocumentModal({ content, onClose }) {
-  let parsedData,parsedMeta;
+  let parsedData, parsedMeta;
   // const content1='{\"Court/Tribunal\": \"International Court of Justice (ICJ)\", \"Judges Involved\": \"President Manfred LACHS, Registrar S. AQUARONE\", \"Legal Principles\": \"Article 48 of the Statute of the Court, Article 40 of the Rules of Court\", \"Full Case Overview\": \"- In May 1973, Pakistan instituted proceedings against India concerning 195 Pakistani prisoners of war whom, according to Pakistan, India proposed to hand over to Bangladesh, which was said to intend trying them for acts of genocide and crimes against humanity. India stated that there was no legal basis for the Court\'s jurisdiction in the matter and that Pakistan\'s Application was without legal effect. Pakistan having also filed a Request for the indication of provisional measures, the Court held public sittings to hear observations on this subject; India was not represented at the hearings. In July 1973, Pakistan asked the Court to postpone further consideration of its Request in order to facilitate the negotiations which were due to begin. Before any written pleadings had been filed, Pakistan informed the Court that negotiations had taken place, and requested the Court to record discontinuance of the proceedings. Accordingly, the case was removed from the List by an Order of 15 December 1973.\", \"Case Summary\": \"- Introduction: The ICJ issued an order regarding the trial of Pakistani prisoners of war in a case between Pakistan and India.\\n- Laws: The order extended the time limits for filing memorials by both governments.\\n-\", \"Conclusion\": \"The subsequent procedure was reserved for further decision.\", \"Document Summary\": \"The ICJ issued an order on 29 September 1973 in the case concerning the trial of Pakistani prisoners of war between Pakistan and India, extending filing deadlines for memorials.\", \"Decision\": \"The Court extended the time limits for filing memorials by the governments of Pakistan and India.\\nConclusion: The ICJ granted an extension for filing memorials in the case between Pakistan and India regarding the trial of Pakistani prisoners of war.\", \"Document Type\": \"Press Release (Unofficial)\", \"Date\": \"29 September 1973\", \"Case No.\": \"Not Found\", \"History of Proceedings\": \"The ICJ extended the filing deadlines for memorials by the governments of Pakistan and India in the case concerning the trial of Pakistani prisoners of war.\", \"Coram Composition\": \"President Manfred LACHS, Registrar S. AQUARONE\", \"Citation\": \"Trial of Pakistani Prisoners of War, Order of 29 September 1973, Z.C.J. Reports 1973, p. 344.\", \"Document type\": \"Summary of Judgement- Unofficial\", \"Document No.\": \"Summary 1973/1\", \"Keywords\": \"International Court of Justice, Pakistani prisoners of war, filing deadlines, memorials\", \"Case Details\": \"- Introduction\\n    A. Factual background: The ICJ issued an order regarding the trial of Pakistani prisoners of war in a case between Pakistan and India.\\n    B. The court\'s appellate function and the scope of the right of appeal to the court: Not Found\\n- Grounds of Appeal\\n    A. The second ground of appeal: rejection by the ICAO Council of the first preliminary objection.\\n        1. Whether the dispute between the Parties relates to the interpretation or application of the IASTA: Not Found\", \"Separate Opinion of Judge\": \"Not Found\", \"Articles Involved\": \"Article 48 of the Statute of the Court, Article 40 of the Rules of Court\"}'
 
   console.log(content)
-  console.log(content.props.children.page)
   try {
     parsedData = JSON.parse(content.props.children.page);
+
+    console.log("parsee....", parsedData)
     parsedMeta = content.props.children.meta;
-    console.log("resss ... : ", parsedData)
+
+    // console.log(parsedMeta)
+    // console.log("resss ... : ", parsedData)
   } catch (error) {
     console.error('Error parsing JSON:', error);
     parsedData = { error: 'Invalid JSON' };
@@ -572,7 +575,7 @@ function DocumentModal({ content, onClose }) {
     return JSON.stringify(value, null, 4);
   };
   const [expanded, setExpanded] = useState(false);
-  
+
   // const handleScroll = (event) => {
   //   event.preventDefault();
   //   event.stopPropagation();
@@ -748,8 +751,8 @@ function App() {
 
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
-  const backend_url = "https://api.humanrightsdossier.com"
-  // const backend_url = "http://127.0.0.1:8000"
+  // const backend_url = "https://api.humanrightsdossier.com"
+  const backend_url = "http://127.0.0.1:8000"
 
 
   //   const handleModalOpen = () => {
@@ -1310,7 +1313,7 @@ function App() {
           {/* Logo */}
           {results && (
             <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-              <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={()=>{setResults(null)}}  />
+              <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { setResults(null) }} />
             </div>
           )}
 
@@ -1378,17 +1381,17 @@ function App() {
                   Search
                 </button>
                 {loading && (
-                      <div className="spinner-overlay">
-                        <div className='spinner'>
+                  <div className="spinner-overlay">
+                    <div className='spinner'>
 
-                          <Lottie animationData={nopage} loop={true} renderer={'svg'} />
-                          {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
-                        </div>
-                      </div>
-                      // <div className="loading-bar">
-                      //   Loading...
-                      // </div>
-                    ) }
+                      <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                      {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
+                    </div>
+                  </div>
+                  // <div className="loading-bar">
+                  //   Loading...
+                  // </div>
+                )}
 
                 {showSuggestions && suggestions.length > 0 && (
                   <ul className="suggestions-list">
@@ -1538,7 +1541,7 @@ function App() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => setShowSuggestions(true)}
 
-                  onKeyDown={handleKeyDown}
+                      onKeyDown={handleKeyDown}
                       onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
                       // onChange={fetchSuggestions((e) => setSearchQuery(e.target.value))}. (Score: {suggestion.score})
                       placeholder="Enter search query..."
@@ -1568,7 +1571,7 @@ function App() {
 
 
                 </div>
-                
+
                 <div className="central-content">
                   {!results && <center>
                     <div style={{ paddingTop: "140px" }}>
@@ -1576,27 +1579,7 @@ function App() {
                     </div></center>}
 
                   {/* <div>Related Items: {keywo}</div> */}
-                  <div className="search-results">
-                    {loading ? (
-                      <div className="spinner-overlay">
-                        <div className='spinner'>
-
-                          <Lottie animationData={nopage} loop={true} renderer={'svg'} />
-                          {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
-                        </div>
-                      </div>
-                      // <div className="loading-bar">
-                      //   Loading...
-                      // </div>
-                    ) : (
-                      <div>
-                        {/* <button onClick={toggleSortMode} className="toggle-button">
-                {sortByDate ? 'Sort by Score' : 'Sort by Date'}
-                </button>
-                <button onClick={togglegroupedMode} className="toggle-button">
-                {group ? "Normal" : 'Sort by group'}
-                </button> */}
-                        <div>
+                  <div>
                           {results && (<div className="toggle">
                             <div>
                               {/* <label className="switch-label">Sort by Date</label>
@@ -1605,11 +1588,41 @@ function App() {
                                 <span className="slider round"></span>
                               </label> */}
                               {/* {sortByDate && ( */}
-                              <div>
+                              {/* <div>
                                 <button onClick={toggleSortDirection} onChange={toggleSortMode}>
                                   {sortDirection === "newer" ? "Oldest to Newest ⬇️" : "Newest to Oldest ⬆️"}
                                 </button>
-                              </div>
+                              </div> */}
+                               <div className="toggle">
+                  <div>
+                    <label className="switch-label">Sort by Date</label>
+                    <label className="switch">
+                      <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
+                      <span className="slider round"></span>
+                    </label>
+                    {sortByDate && (
+                      <div>
+                        <button onClick={toggleSortDirection}>
+                          {sortDirection === "newer" ? "Newer to Older" : "Older to Newer"}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  {/* <div>
+                    <label className="switch-label">Sort by Case Name</label>
+                    <label className="switch">
+                      <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
+                      <span className="slider round"></span>
+                    </label>
+                  </div> */}
+                  <div>
+                  <label className="switch-label">Group by Score</label>
+                  <label className="switch">
+                    <input type="checkbox" checked={group} onChange={togglegroupedMode} />
+                    <span className="slider round"></span>
+                  </label>
+                </div>
+                </div>
                               {/* )} */}
                             </div>
 
@@ -1631,6 +1644,29 @@ function App() {
                     </div>*/}
                           </div>)}
                         </div>
+                  <div className="search-results-container">
+                    
+                  <div className="search-results">
+                    {loading ? (
+                      <div className="spinner-overlay">
+                        <div className='spinner'>
+
+                          <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                          {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
+                        </div>
+                      </div>
+                      // <div className="loading-bar">
+                      //   Loading...
+                      // </div>
+                    ) : (
+                      <div>
+                        {/* <button onClick={toggleSortMode} className="toggle-button">
+                            {sortByDate ? 'Sort by Score' : 'Sort by Date'}
+                            </button>
+                            <button onClick={togglegroupedMode} className="toggle-button">
+                            {group ? "Normal" : 'Sort by group'}
+                            </button> */}
+                        
 
                         {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
 
@@ -1768,7 +1804,7 @@ function App() {
                         )}
                       </div>
                     )}
-                  </div>
+                  </div></div>
                 </div>
               </div>
             )}
@@ -1810,8 +1846,8 @@ function App() {
             {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
           </>
         ) : (
-<div className="parent-div">
-          {/* <div className="central-content">
+          <div className="parent-div">
+            {/* <div className="central-content">
             
             <div className="search-container">
               <h1>Human Rights Dossier</h1>
