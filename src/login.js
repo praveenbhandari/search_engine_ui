@@ -9,7 +9,7 @@ const LoginModal = ({ show, handleLogin }) => {
     const [location, setLocation] = useState("New York");
     // const [countryCode, setCountryCode] = useState('+91');
     // const locations = ["New York", "London", "Mumbai", "Tokyo", "Sydney"];
-    const locations = ["--",
+    const locations = [
         "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
         "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
         "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Côte d'Ivoire",
@@ -75,7 +75,7 @@ const LoginModal = ({ show, handleLogin }) => {
                     <form onSubmit={handleSubmit} className="login_form">
                         <div className="form_group">
                             <label htmlFor="name">Name: </label>
-                            <input placeholder='Enter your full name' type="text" id="name" value={name}  onChange={e => setName(e.target.value)} required />
+                            <input placeholder='Enter your full name' type="text" id="name" value={name} onChange={e => setName(e.target.value)} required />
                         </div>
                         <div className="form_group">
                             <label htmlFor="email">Email:</label>
@@ -98,9 +98,10 @@ const LoginModal = ({ show, handleLogin }) => {
                                 value={countryCode}
                                 onChange={e => setCountryCode(e.target.value)}
                                 style={{ width: '30%', marginRight: '10px' }}
+                                required
                             >
                                 {/* Default option */}
-                                <option value="0">--</option>
+                                <option value="">--</option>
                                 {/* Map through all countries to generate options with country first, code after */}
                                 {allCountries.map((country) => (
                                     <option key={country.iso2} value={`+${country.dialCode} `}>
@@ -111,16 +112,22 @@ const LoginModal = ({ show, handleLogin }) => {
                             <input type="tel" id="phone" value={phone} onChange={e => {
                                 const phoneNumber = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
                                 setPhone(phoneNumber);
-                            }} maxLength="10" required placeholder="Enter your phone number" style={{ width: '70%',padding:'5px' }} />
+                            }} maxLength="10" required placeholder="Enter your phone number" style={{ width: '70%', padding: '5px' }} />
                         </div>
                         <div className="form_group">
                             <label htmlFor="location">Location:</label>
-                            <select className="border border-black rounded-lg text-gray-700 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    id="location" value={location} onChange={e => setLocation(e.target.value)} required>
-                                {locations.map((loc, index) => (
-                                    <option key={index} value={loc}>{loc}</option>
-                                ))}
-                            </select>
+                            <select
+    className="border border-black rounded-lg text-gray-700 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    id="location"
+    value={location}
+    onChange={e => setLocation(e.target.value)}
+    required
+>
+    <option value="">-- Select Location --</option>
+    {locations.map((loc, index) => (
+        <option key={index} value={loc}>{loc}</option>
+    ))}
+</select>
                         </div>
                         <button type="submit" className="login_button">Login</button>
                     </form>

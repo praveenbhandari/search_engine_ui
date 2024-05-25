@@ -1,6 +1,6 @@
 
 import "./styles.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback,useRef } from "react";
 // import { RemoteRunnable } from "langchain/runnables/remote";
 import PropTypes from "prop-types";
 import axios from 'axios';
@@ -477,13 +477,14 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
               content={
                 <>
                   {{ 'page': page_content, 'meta': metadata }}
-                  {/* <Highlighter
+                  <Highlighter
                     highlightClassName="highlighted-text"
                     searchWords={searchRegexes}
                     // autoEscape={true}
-                    textToHighlight={page_content + "\n\nDocument Type: " + metadata["Document Type"] + "\n\nJudges Involved: " + metadata["Judges"] + "\n\nKeywords: " + metadata["keywords"]}
+                    textToHighlight= {{ 'page': page_content, 'meta': metadata }}
+                    // textToHighlight={page_content + "\n\nDocument Type: " + metadata["Document Type"] + "\n\nJudges Involved: " + metadata["Judges"] + "\n\nKeywords: " + metadata["keywords"]}
                   // textToHighlight={Object.entries(metadata).map(([key, value]) => `${key}: ${value}`).join('\n\n')}
-                  /> */}
+                  />
                   {/* <div>
                     {metadata.reference && metadata.reference.length > 0 && (
                       <select onChange={handleChange} value={selectedReference}>
@@ -719,7 +720,7 @@ function App() {
   const [selectedKeyword, setSelectedKeyword] = useState(null);
 
   const [suggestions, setSuggestions] = useState([]);
-  const [sortByDate, setSortByDate] = useState(true); // State to track sorting mode
+  const [sortByDate, setSortByDate] = useState(false); // State to track sorting mode
   const [groupedResults, setGroupedResults] = useState(null); // State to store grouped results
 
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -1303,13 +1304,64 @@ function App() {
       // Call the onSearch function with the current query
       handleSearch()
     }
+  };  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const avatarRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      avatarRef.current &&
+      !avatarRef.current.contains(event.target)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      const rect = avatarRef.current.getBoundingClientRect();
+      const dropdownWidth = 160; // approximate width of the dropdown
+      const dropdownHeight = 100; // approximate height of the dropdown
+
+      let newPosition = {};
+
+      if (rect.left + dropdownWidth > window.innerWidth) {
+        newPosition.left = window.innerWidth - dropdownWidth - 10; // 10px for padding
+      } else {
+        newPosition.left = rect.left;
+      }
+
+      if (rect.top + dropdownHeight + 40 > window.innerHeight) { // 40px for the avatar height and padding
+        newPosition.top = rect.top - dropdownHeight - 10;
+      } else {
+        newPosition.top = rect.top + 40;
+      }
+
+      setDropdownPosition(newPosition);
+
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
 
 
   return (
     <div>
-      <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb' }}>
-        <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between">
+      <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
+        <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{zIndex: 9999}}>
           {/* Logo */}
           {results && (
             <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
@@ -1323,7 +1375,7 @@ function App() {
           </nav>
 
           {/* User Login/Logout */}
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          {/* <div style={{ display: 'flex', alignItems: 'center' }}>
             {user ? (
               <div className="text-gray-900 mr-2">Welcome, {user.name}!</div>
             ) : (
@@ -1343,7 +1395,67 @@ function App() {
                 </svg>
               </button>
             )}
+          </div> */}
+
+<div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
+      {user ? (
+        <div className="relative">
+          <div
+            ref={avatarRef}
+            className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full cursor-pointer"
+            onClick={toggleDropdown}
+          >
+            {user.name.charAt(0).toUpperCase()}
           </div>
+          {dropdownOpen && (
+            <div
+              ref={dropdownRef}
+              className="fixed w-40 bg-white border rounded shadow-lg p-2"
+              style={{ top: dropdownPosition.top, left: dropdownPosition.left, zIndex: 1000 }}
+            >
+              <div className="text-gray-900 mb-2">Welcome,</div>
+              <div className="text-gray-900 mb-2">{user.name}</div>
+              <button
+                onClick={logoutUser}
+                className="flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-red-700 rounded text-white w-full"
+              >
+                Logout
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 ml-1"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <button
+          onClick={handleModalOpen}
+          className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-base mt-4 md:mt-0"
+        >
+          Login
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            className="w-4 h-4 ml-1"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      )}
+    </div>
+          
         </div>
       </header>
 
@@ -1370,7 +1482,7 @@ function App() {
                   type="text"
                   value={searchQuery}
                   onKeyDown={handleKeyDown}
-                  style={{ borderRadius: '10px' }}
+                  style={{ borderRadius: '10px', }}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
@@ -1425,24 +1537,24 @@ function App() {
                   {/* <div>
                 <img src={imag} alt="My Image" style={{ width: '150px', height: 'auto' }} />
               </div> */}
-                  {results && (<div>
+                  {results && (
+                  <div >
                     {/* <div className="filter-title">Parties Involved</div> */}
-                    <select
+                    <select 
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedParty || ""}
                       onChange={(e) => setSelectedParty(e.target.value)}
                     >
-                      <option value="">Parties Involved</option>
+                      <option  value="">Parties Involved</option>
                       {uniqueParties.map((party) => (
                         <option key={party} value={party}>
                           {party}
                         </option>
                       ))}
-                    </select>
-                    {/* ...other right-side filters if any... */}
-                    {/* <div className="right-filters"> */}
+                    </select> 
 
-                    {/* <div className="filter-title">Judge</div> */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedJudge || ""}
                       onChange={(e) => setSelectedJudge(e.target.value)}
                     >
@@ -1456,6 +1568,7 @@ function App() {
 
                     {/* <div className="filter-title">Document Type</div> */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedDocumentType || ""}
                       onChange={(e) => setSelectedDocumentType(e.target.value)}
                     >
@@ -1469,6 +1582,7 @@ function App() {
 
                     {/* <div className="filter-title">Keyword</div> */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedKeyword || ""}
                       onChange={(e) => setSelectedKeyword(e.target.value)}
                     >
@@ -1482,6 +1596,7 @@ function App() {
                     {/* <div className="filter-title">Month</div> */}
                     {/* Date Filters */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedMonth || ""}
                       onChange={(e) => setSelectedMonth(e.target.value)}
                     >
@@ -1496,6 +1611,7 @@ function App() {
                     {/* <div className="filter-title">Year</div> */}
                     {/* Date Filters */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedYear || ""}
                       onChange={(e) => setSelectedYear(e.target.value)}
                     >
@@ -1508,6 +1624,7 @@ function App() {
                     </select>
                     {/* <div className="filter-title">Court Name</div> */}
                     <select
+  style={{ border: "1px solid black", borderRadius: "10px" }}
                       value={selectedCourt || ""}
                       onChange={(e) => setSelectedCourt(e.target.value)}
                     >
@@ -1537,7 +1654,8 @@ function App() {
                     <input id="querr"
                       type="text"
                       value={searchQuery}
-                      style={{ borderRadius: '10px' }}
+                      style={{ borderRadius: '10px',}}
+                  
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => setShowSuggestions(true)}
 
@@ -1615,24 +1733,24 @@ function App() {
                       <span className="slider round"></span>
                     </label>
                   </div> */}
-                  <div>
+                  {/* <div>
                   <label className="switch-label">Group by Score</label>
                   <label className="switch">
                     <input type="checkbox" checked={group} onChange={togglegroupedMode} />
                     <span className="slider round"></span>
                   </label>
-                </div>
+                </div> */}
                 </div>
                               {/* )} */}
                             </div>
 
-                            {/* <div>
+                            <div>
                               <label className="switch-label">Sort by Case Name</label>
                               <label className="switch">
                                 <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
                                 <span className="slider round"></span>
                               </label>
-                            </div> */}
+                            </div>
 
 
                             {/* <div>
@@ -1686,10 +1804,10 @@ function App() {
                               return acc;
                             }, {})
                           ).map((group, index) => (
-                            <div key={group.caseName} style={{ backgroundColor: index % 2 === 0 ? '#db9797' : '#bbcb7f', marginBottom: index !== group.length - 1 ? '10px' : '0' }}>
-                              <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
-                                <h4>{group.caseName}</h4>
-                                <span className="accordion-toggle" style={{ fontSize: '3.5em', padding: '5' }}>
+                            <div key={group.caseName} style={{borderRadius:'5px', borderWidth:'0.5px', borderColor:'black', backgroundColor: index % 2 === 0 ? '#e7e3e3' : '#c3c3c6', marginBottom: index !== group.length - 1 ? '20px' : '0' }}>
+                              <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between',  padding: '5',textAlign:"center"}}>
+                                <div style={{ fontSize: '1.2em',  padding: '10px'}}><strong>{group.caseName}</strong></div>
+                                <span className="accordion-toggle" style={{ fontSize: '2em', paddingRight: '10px',textAlign:"center" }}>
                                   {openAccordion.includes(group.caseName) ? "-" : "+"}
                                 </span>
                               </div>
@@ -1933,6 +2051,13 @@ function App() {
                           <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
                           <span className="slider round"></span>
                         </label>
+                        {sortByCaseName && (
+                          <div>
+                            <button onClick={setOpenAccordion(true)}>
+                              {openAccordion  ? "Expand All" : "Collapse All"}
+                            </button>
+                          </div>
+                        )}
                       </div>
                       {/* <div>
                       <label className="switch-label">Group by Score</label>
