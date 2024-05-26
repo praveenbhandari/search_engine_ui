@@ -477,14 +477,14 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
               content={
                 <>
                   {{ 'page': page_content, 'meta': metadata }}
-                  <Highlighter
+                  {/* <Highlighter
                     highlightClassName="highlighted-text"
                     searchWords={searchRegexes}
                     // autoEscape={true}
                     textToHighlight= {{ 'page': page_content, 'meta': metadata }}
                     // textToHighlight={page_content + "\n\nDocument Type: " + metadata["Document Type"] + "\n\nJudges Involved: " + metadata["Judges"] + "\n\nKeywords: " + metadata["keywords"]}
                   // textToHighlight={Object.entries(metadata).map(([key, value]) => `${key}: ${value}`).join('\n\n')}
-                  />
+                  /> */}
                   {/* <div>
                     {metadata.reference && metadata.reference.length > 0 && (
                       <select onChange={handleChange} value={selectedReference}>
