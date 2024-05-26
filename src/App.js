@@ -753,7 +753,7 @@ function App() {
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
   // const backend_url = "https://api.humanrightsdossier.com"
-  const backend_url = "http://127.0.0.1:8000"
+  const backend_url = "https://api.humanrightsdossier.com"
 
 
   //   const handleModalOpen = () => {
