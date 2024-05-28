@@ -444,34 +444,42 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
               </a>
             </div>
           )}
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-            <div className="keywords-container" style={{ flexWrap: 'wrap' }}>
-              {metadata.Keywords && Array.isArray(metadata.Keywords) && metadata.Keywords.length > 0 && (
-                metadata.Keywords.map((keyword, index) => (
-                  keyword === "" ? null : (
-                    <button
-                      key={index}
-                      className="keyword-button"
-                      onClick={() => handleKeywordClick(keyword)}
-                    >
-                      {/* {keyword}
-             */}
-                      <Highlighter
-                        highlightClassName="highlighted-text"
-                        searchWords={[firstword]}
-                        textToHighlight={keyword}
-                      />
-                    </button>
-                  )
-                ))
-              )}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button onClick={() => setModalOpen(true)} className="view-document">
-                Continue Reading
-              </button>
-            </div>
-          </div>
+         <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+  <div className="keywords-container" style={{ flexWrap: 'wrap' , maxWidth:'80%'}}>
+    {metadata.Keywords && Array.isArray(metadata.Keywords) && metadata.Keywords.length > 0 && (
+      metadata.Keywords.map((keyword, index) => (
+        keyword === "" ? null : (
+          <button
+            key={index}
+            className="keyword-button"
+            onClick={() => handleKeywordClick(keyword)}
+          >
+            {/* {keyword} */}
+            <Highlighter
+              highlightClassName="highlighted-text"
+              searchWords={[firstword]}
+              textToHighlight={keyword}
+            />
+          </button>
+        )
+      ))
+    )}
+  </div>
+  <div style={{ display: 'flex', justifyContent: 'flex-end', height: '40px' }}>
+    <button
+      onClick={() => setModalOpen(true)}
+      className="view-document"
+      style={{
+        height: '100%',
+        fontSize: '16px', // Adjust the font size as needed
+        lineHeight: '40px', // Match the height of the container
+        padding: '0 16px', // Add horizontal padding as needed
+      }}
+    >
+      Continue Reading
+    </button>
+  </div>
+</div>
           {isModalOpen && (
             <DocumentModal
               content={
@@ -1713,19 +1721,20 @@ function App() {
                                 </button>
                               </div> */}
                                <div className="toggle">
+                                {sortByDate && (
+                      <div>
+                        <button onClick={toggleSortDirection}>
+                          {sortDirection === "newer" ? "Newest to Oldest ⬇️" : "Oldest to Newest ⬆️"}
+                        </button>
+                      </div>
+                    )}
                   <div>
                     <label className="switch-label">Sort by Date</label>
                     <label className="switch">
                       <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
                       <span className="slider round"></span>
                     </label>
-                    {sortByDate && (
-                      <div>
-                        <button onClick={toggleSortDirection}>
-                          {sortDirection === "newer" ? "Newer to Older" : "Older to Newer"}
-                        </button>
-                      </div>
-                    )}
+                    
                   </div>
                   {/* <div>
                     <label className="switch-label">Sort by Case Name</label>
