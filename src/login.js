@@ -35,8 +35,8 @@ const LoginModal = ({ show, handleLogin }) => {
     const [countryCode, setCountryCode] = useState('0');
 
 
+    const backend_url = "http://127.0.0.1:8000"
     // const backend_url = "https://api.humanrightsdossier.com"
-    const backend_url = "https://api.humanrightsdossier.com"
     const handleSubmit = async (event) => {
         event.preventDefault();
         // console.log(name,email,phone)
@@ -97,11 +97,11 @@ const LoginModal = ({ show, handleLogin }) => {
                             <select
                                 value={countryCode}
                                 onChange={e => setCountryCode(e.target.value)}
-                                style={{ width: '30%', marginRight: '10px' }}
+                                style={{ width: '30%', marginRight: '10px', borderRadius:'10px', borderColor:'black', borderWidth:'1px' }}
                                 required
                             >
                                 {/* Default option */}
-                                <option value="">--</option>
+                                <option value="">  --</option>
                                 {/* Map through all countries to generate options with country first, code after */}
                                 {allCountries.map((country) => (
                                     <option key={country.iso2} value={`+${country.dialCode} `}>
