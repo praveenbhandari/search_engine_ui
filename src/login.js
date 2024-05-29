@@ -82,6 +82,41 @@ const LoginModal = ({ show, handleLogin }) => {
                             <input placeholder='Enter your email address' type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
                         </div>
                         <div className="form_group">
+                            <label htmlFor="location">Location:</label>
+                            <select
+                                className="border border-black rounded-lg text-gray-700 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dropdown-location"
+                                id="location"
+                                value={location}
+                                onChange={e => {
+                                    const selectedLocation = e.target.value;
+                                    setLocation(selectedLocation);
+
+                                    const selectedCountry = allCountries.find(
+                                        country => country.name === selectedLocation
+                                    );
+
+                                    if (selectedCountry) {
+                                        setCountryCode(`+${selectedCountry.dialCode}`);
+                                    } else {
+                                        setCountryCode('');
+                                    }
+                                }}
+                                required
+                                style={{
+                                    maxHeight: '200px', // Set a maximum height for the dropdown
+                                    overflowY: 'auto', // Enable vertical scrolling when content exceeds max-height
+                                    width: '200px', // Set a fixed width for the dropdown
+                                }}
+                            >
+                                <option value="">-- Select Location --</option>
+                                {allCountries.map((country, index) => (
+                                    <option key={country.iso2} value={`${country.name}`}>
+                                        {country.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="form_group">
                             <label htmlFor="phone">Phone Number:</label>
                             {/* <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} required /> */}
                         </div>
@@ -97,14 +132,14 @@ const LoginModal = ({ show, handleLogin }) => {
                             <select
                                 value={countryCode}
                                 onChange={e => setCountryCode(e.target.value)}
-                                style={{ width: '30%', marginRight: '10px', borderRadius:'10px', borderColor:'black', borderWidth:'1px' }}
+                                style={{ width: '30%', marginRight: '10px', borderRadius: '10px', borderColor: 'black', borderWidth: '1px' }}
                                 required
                             >
                                 {/* Default option */}
                                 <option value="">  --</option>
                                 {/* Map through all countries to generate options with country first, code after */}
                                 {allCountries.map((country) => (
-                                    <option key={country.iso2} value={`+${country.dialCode} `}>
+                                    <option key={country.iso2} value={`+${country.dialCode}`}>
                                         {`+${country.dialCode}`}
                                     </option>
                                 ))}
@@ -114,21 +149,10 @@ const LoginModal = ({ show, handleLogin }) => {
                                 setPhone(phoneNumber);
                             }} maxLength="10" required placeholder="Enter your phone number" style={{ width: '70%', padding: '5px' }} />
                         </div>
-                        <div className="form_group">
-                            <label htmlFor="location">Location:</label>
-                            <select
-    className="border border-black rounded-lg text-gray-700 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    id="location"
-    value={location}
-    onChange={e => setLocation(e.target.value)}
-    required
->
-    <option value="">-- Select Location --</option>
-    {locations.map((loc, index) => (
-        <option key={index} value={loc}>{loc}</option>
-    ))}
-</select>
-                        </div>
+
+
+
+
                         <button type="submit" className="login_button">Login</button>
                     </form>
                 </div>

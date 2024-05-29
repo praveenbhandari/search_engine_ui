@@ -1,6 +1,6 @@
 
 import "./styles.css";
-import React, { useState, useEffect, useCallback,useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 // import { RemoteRunnable } from "langchain/runnables/remote";
 import PropTypes from "prop-types";
 import axios from 'axios';
@@ -20,6 +20,8 @@ import { FocusOn } from 'react-focus-on';
 
 // or less ideally
 import { Button } from 'react-bootstrap';
+import { ReactComponent as FeedbackIcon }  from './feedback-icon.svg';
+// import feed from "./"
 // import Container from 'react-bootstrap/Container';
 // import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 // import 'nextui/dist/index.css';
@@ -444,42 +446,42 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
               </a>
             </div>
           )}
-         <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-  <div className="keywords-container" style={{ flexWrap: 'wrap' , maxWidth:'80%'}}>
-    {metadata.Keywords && Array.isArray(metadata.Keywords) && metadata.Keywords.length > 0 && (
-      metadata.Keywords.map((keyword, index) => (
-        keyword === "" ? null : (
-          <button
-            key={index}
-            className="keyword-button"
-            onClick={() => handleKeywordClick(keyword)}
-          >
-            {/* {keyword} */}
-            <Highlighter
-              highlightClassName="highlighted-text"
-              searchWords={[firstword]}
-              textToHighlight={keyword}
-            />
-          </button>
-        )
-      ))
-    )}
-  </div>
-  <div style={{ display: 'flex', justifyContent: 'flex-end', height: '40px' }}>
-    <button
-      onClick={() => setModalOpen(true)}
-      className="view-document"
-      style={{
-        height: '100%',
-        fontSize: '16px', // Adjust the font size as needed
-        lineHeight: '40px', // Match the height of the container
-        padding: '0 16px', // Add horizontal padding as needed
-      }}
-    >
-      Continue Reading
-    </button>
-  </div>
-</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+            <div className="keywords-container" style={{ flexWrap: 'wrap', maxWidth: '80%' }}>
+              {metadata.Keywords && Array.isArray(metadata.Keywords) && metadata.Keywords.length > 0 && (
+                metadata.Keywords.map((keyword, index) => (
+                  keyword === "" ? null : (
+                    <button
+                      key={index}
+                      className="keyword-button"
+                      onClick={() => handleKeywordClick(keyword)}
+                    >
+                      {/* {keyword} */}
+                      <Highlighter
+                        highlightClassName="highlighted-text"
+                        searchWords={[firstword]}
+                        textToHighlight={keyword}
+                      />
+                    </button>
+                  )
+                ))
+              )}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', height: '40px' }}>
+              <button
+                onClick={() => setModalOpen(true)}
+                className="view-document"
+                style={{
+                  height: '100%',
+                  fontSize: '16px', // Adjust the font size as needed
+                  lineHeight: '40px', // Match the height of the container
+                  padding: '0 16px', // Add horizontal padding as needed
+                }}
+              >
+                Continue Reading
+              </button>
+            </div>
+          </div>
           {isModalOpen && (
             <DocumentModal
               content={
@@ -757,6 +759,7 @@ function App() {
   const [s_phone, sets_Phone] = useState('');
   const [s_location, sets_Location] = useState('location');
   const [s_user_id, setUserid] = useState();
+  const [feedback_data, setFeedback_data] = useState(null);
 
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
@@ -1097,7 +1100,7 @@ function App() {
 
       try {
         // const response = await axios.post('http://3.108.219.46/search', {
-          console.log( { user_id: s_user_id, query: searchQuery, ip: ip, location: location })
+        console.log({ user_id: s_user_id, query: searchQuery, ip: ip, location: location })
         const response = await axios.post(backend_url + '/search', { user_id: s_user_id, query: searchQuery, ip: ip, location: location });
         // const quer = await axios.post(backend_url+'/add_query', {query: searchQuery, ip:ipp});
         setLoading(true);
@@ -1313,11 +1316,16 @@ function App() {
       // Call the onSearch function with the current query
       handleSearch()
     }
-  };  const [dropdownOpen, setDropdownOpen] = useState(false);
+  }; const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const avatarRef = useRef(null);
   const dropdownRef = useRef(null);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  // const [feedback_data, setFeedback_data] = useState('');
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -1364,13 +1372,27 @@ function App() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [dropdownOpen]);
+  // const [isCollapsed, setIsCollapsed] = useState(true);
+  // const [feedbackData, setFeedbackData] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-
-
+  const feedback = async () => {
+    await axios.post(backend_url + '/feedback', { user_id: s_user_id, query: feedback_data, ip: ip, location: location }).then(handleFeedback);
+  
+  }
+  const handleFeedback = () => {
+    // Handle the feedback submission logic here
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsCollapsed(true); // Collapse the form after a short delay
+      setIsSubmitted(false); // Reset submission status
+      setFeedback_data(''); // Clear feedback data
+    }, 2000); // Display message for 2 seconds
+  };
   return (
     <div>
       <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
-        <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{zIndex: 9999}}>
+        <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{ zIndex: 9999 }}>
           {/* Logo */}
           {results && (
             <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
@@ -1406,29 +1428,51 @@ function App() {
             )}
           </div> */}
 
-<div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
-      {user ? (
-        <div className="relative">
-          <div
-            ref={avatarRef}
-            className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full cursor-pointer"
-            onClick={toggleDropdown}
-          >
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-          {dropdownOpen && (
-            <div
-              ref={dropdownRef}
-              className="fixed w-40 bg-white border rounded shadow-lg p-2"
-              style={{ top: dropdownPosition.top, left: dropdownPosition.left, zIndex: 1000 }}
-            >
-              <div className="text-gray-900 mb-2">Welcome,</div>
-              <div className="text-gray-900 mb-2">{user.name}</div>
+          <div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
+            {user ? (
+              <div className="relative">
+                <div
+                  ref={avatarRef}
+                  className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                {dropdownOpen && (
+                  <div
+                    ref={dropdownRef}
+                    className="fixed w-40 bg-white border rounded-lg shadow-lg"
+                    style={{ top: dropdownPosition.top, left: dropdownPosition.left, zIndex: 1000 }}
+                  >
+                    <div>
+                      <div className="text-gray-900 p-2">Welcome {user.name}</div>
+                    </div>
+                    <div >
+                      <button
+                        onClick={logoutUser}
+                        className=" px-2 py-1 flex items-center justify-between border rounded-b-lg bg-red-600 focus:outline-none hover:bg-red-700 text-white w-full"
+                      //  style={{ padding: '0', borderRadius: '0 0 10px 10px' }}
+                      >
+                        Logout
+                        <div >
+                          <svg width="26" height="15" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.5478 19.2357C18.5527 18.6014 18.138 18.1612 17.5628 18.1676C16.9974 18.174 16.6008 18.6092 16.5979 19.2328C16.5949 19.8021 16.5979 20.3719 16.5969 20.9412C16.5949 22.2245 15.7743 23.0461 14.4909 23.0466C11.3261 23.0476 8.16081 23.0476 4.996 23.0466C3.6975 23.0466 2.87781 22.2274 2.87781 20.9289C2.87732 15.308 2.87732 9.68702 2.87781 4.06606C2.87781 2.78272 3.69995 1.9601 4.98279 1.95961C8.15592 1.95863 11.329 1.95814 14.5022 1.95961C15.7689 1.9601 16.5935 2.78615 16.5969 4.05188C16.5984 4.66175 16.5881 5.27212 16.6018 5.882C16.614 6.42732 17.0449 6.83912 17.5741 6.83863C18.1032 6.83863 18.5366 6.42683 18.5449 5.88102C18.5561 5.14105 18.5693 4.39961 18.5361 3.66061C18.4632 2.02319 17.2498 0.550088 15.6569 0.15198C15.3209 0.0678586 14.9678 0.0135711 14.6225 0.0125929C11.3682 0.00232233 8.11337 -0.00990459 4.85906 0.013082C3.2006 0.025798 1.99552 0.824949 1.27853 2.3181C1.10637 2.67708 1.03986 3.08693 0.924927 3.4733V21.5344C1.05013 21.9413 1.1274 22.3712 1.30983 22.7507C1.90846 23.9993 2.91009 24.7354 4.28293 24.9565C4.32058 24.9623 4.35531 24.9853 4.3915 25H15.0837C15.1282 24.9843 15.1712 24.9604 15.2172 24.9535C16.9373 24.6948 18.3013 23.3474 18.495 21.6234C18.5835 20.8355 18.5424 20.0324 18.5483 19.2357H18.5478Z" fill="white" />
+                            <path d="M25.1592 10.7723C24.4534 10.1106 23.7863 9.40775 23.1011 8.72353C23.0551 8.67756 23.0087 8.6311 22.9583 8.59051C22.6453 8.33912 22.2995 8.27896 21.9322 8.44623C21.5664 8.613 21.3737 8.90987 21.359 9.31091C21.3473 9.62295 21.4872 9.87189 21.7063 10.0876C22.1914 10.5644 22.6712 11.0466 23.2019 11.5753H22.8546C19.1372 11.5753 15.4192 11.5753 11.7017 11.5753C11.5961 11.5753 11.4895 11.57 11.3848 11.5822C10.9867 11.6291 10.7001 11.838 10.5592 12.2131C10.4213 12.5794 10.4966 12.9208 10.7568 13.2113C10.9852 13.4661 11.2865 13.5302 11.6191 13.5297C15.3693 13.5263 19.1195 13.5272 22.8698 13.5272H23.2033C22.6712 14.0569 22.1841 14.5245 21.72 15.014C21.5747 15.1671 21.4451 15.3662 21.3898 15.5662C21.2725 15.9907 21.4818 16.4123 21.8574 16.6211C22.2447 16.8363 22.6874 16.783 23.0229 16.4529C23.7418 15.7457 24.4363 15.0126 25.1689 14.32C26.1256 13.4162 26.127 11.6785 25.1592 10.7708V10.7723Z" fill="white" />
+                          </svg>
+                        </div>
+
+                      </button>
+                    </div>
+                  </div>
+
+                )}
+              </div>
+            ) : (
               <button
-                onClick={logoutUser}
-                className="flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-red-700 rounded text-white w-full"
+                onClick={handleModalOpen}
+                className="inline-flex items-center bg-[#343434] border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-white mt-4 md:mt-0"
               >
-                Logout
+                Login
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -1441,35 +1485,51 @@ function App() {
                   <path d="M5 12h14M12 5l7 7-7 7"></path>
                 </svg>
               </button>
-            </div>
-          )}
-        </div>
-      ) : (
-        <button
-          onClick={handleModalOpen}
-          className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-base mt-4 md:mt-0"
-        >
-          Login
-          <svg
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="w-4 h-4 ml-1"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      )}
-    </div>
-          
+            )}
+          </div>
+
         </div>
       </header>
 
 
-
+      <div className="feedback-wrapper">
+      {isCollapsed ? (
+    <div className="chatbot-icon" onClick={toggleCollapse}>
+      {/* Feedback */}
+      <FeedbackIcon/>
+    </div>
+  ) : (
+    <div className="close-icon" style={{fontWeight:'20px'}} onClick={toggleCollapse}>
+      &#x2715; {/* Unicode character for the cross icon */}
+    </div>
+  )}
+  <div className={`card-container ${isCollapsed ? 'collapsed' : ''}`}>
+    <div className="card-body">
+      {/* <div className="collapsible-header" onClick={toggleCollapse}> */}
+      {/* <span className={`collapse-icon ${isCollapsed ? 'collapsed' : ''}`}>&#9660;</span> */}
+      {/* </div> */}
+      <div className={`collapsible-body ${isCollapsed ? 'collapsed' : ''}`}>
+        <div className="bottom-input form-group">
+          <textarea
+            className="form-control"
+            placeholder="Enter feedback..."
+            value={feedback_data}
+            onChange={(e) => setFeedback_data(e.target.value)}
+            rows="10"
+          ></textarea>
+        </div>
+        <div style={{ paddingTop: '5px' }}>
+        <div style={{ paddingTop: '5px' }}>
+              <button className="btn btn-primary submit-button" onClick={handleFeedback}>
+                Submit 
+              </button>
+              {isSubmitted && <div className="submission-message">Thanks for submission</div>}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div className="main-container">
 
@@ -1547,106 +1607,110 @@ function App() {
                 <img src={imag} alt="My Image" style={{ width: '150px', height: 'auto' }} />
               </div> */}
                   {results && (
-                  <div >
-                    {/* <div className="filter-title">Parties Involved</div> */}
-                    <select 
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedParty || ""}
-                      onChange={(e) => setSelectedParty(e.target.value)}
-                    >
-                      <option  value="">Parties Involved</option>
-                      {uniqueParties.map((party) => (
-                        <option key={party} value={party}>
-                          {party}
-                        </option>
-                      ))}
-                    </select> 
+                    <div >
+                      {/* <div className="filter-title">Parties Involved</div> */}
+                      <select
+                        style={{ border: "1px solid", borderColor:'#343434',color:'#343434', borderRadius: "10px" }}
+                        value={selectedParty || ""}
+                        onChange={(e) => setSelectedParty(e.target.value)}
+                      >
+                        <option value="">Parties Involved</option>
+                        {uniqueParties.map((party) => (
+                          <option key={party} value={party}>
+                            {party}
+                          </option>
+                        ))}
+                      </select>
 
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedJudge || ""}
-                      onChange={(e) => setSelectedJudge(e.target.value)}
-                    >
-                      <option value="">Judge Involved</option>
-                      {uniqueJudges.map((judge) => (
-                        <option key={judge} value={judge}>
-                          {judge}
-                        </option>
-                      ))}
-                    </select>
+                      <select
+                        style={{ border: "1px solid ",borderColor:'#343434',color:'#343434',  borderRadius: "10px" }}
+                        value={selectedJudge || ""}
+                        onChange={(e) => setSelectedJudge(e.target.value)}
+                      >
+                        <option value="">Judge Involved</option>
+                        {uniqueJudges.map((judge) => (
+                          <option key={judge} value={judge}>
+                            {judge}
+                          </option>
+                        ))}
+                      </select>
 
-                    {/* <div className="filter-title">Document Type</div> */}
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedDocumentType || ""}
-                      onChange={(e) => setSelectedDocumentType(e.target.value)}
-                    >
-                      <option value="">Document Type</option>
-                      {uniqueDocumentTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
+                      {/* <div className="filter-title">Document Type</div> */}
+                      <select
+                        style={{ border: "1px solid black",borderColor:'#343434',color:'#343434',  borderRadius: "10px" }}
+                        value={selectedDocumentType || ""}
+                        onChange={(e) => setSelectedDocumentType(e.target.value)}
+                      >
+                        <option value="">Document Type</option>
+                        {uniqueDocumentTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
 
-                    {/* <div className="filter-title">Keyword</div> */}
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedKeyword || ""}
-                      onChange={(e) => setSelectedKeyword(e.target.value)}
-                    >
-                      <option value="">Select Keyword</option>
-                      {uniqueKeywords.map((keyword) => (
-                        <option key={keyword} value={keyword}>
-                          {keyword}
-                        </option>
-                      ))}
-                    </select>
-                    {/* <div className="filter-title">Month</div> */}
-                    {/* Date Filters */}
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedMonth || ""}
-                      onChange={(e) => setSelectedMonth(e.target.value)}
-                    >
-                      <option value="">Select Month</option>
-                      {uniqueMonths.map((month) => (
-                        <option key={month} value={month}>
-                          {month}
-                        </option>
-                      ))}
-                    </select>
-                    {/* ...other left-side filters if any... */}
-                    {/* <div className="filter-title">Year</div> */}
-                    {/* Date Filters */}
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedYear || ""}
-                      onChange={(e) => setSelectedYear(e.target.value)}
-                    >
-                      <option value="">Select Year</option>
-                      {uniqueYears.map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
-                    {/* <div className="filter-title">Court Name</div> */}
-                    <select
-  style={{ border: "1px solid black", borderRadius: "10px" }}
-                      value={selectedCourt || ""}
-                      onChange={(e) => setSelectedCourt(e.target.value)}
-                    >
-                      <option value="">Select Court Name</option>
-                      {uniqueCourts.map((court) => (
-                        <option key={court} value={court}>
-                          {court}
-                        </option>
-                      ))}
-                    </select>
-                    {/* ...other right-side filters if any... */}
-                    {/* </div> */}
-                  </div>)}
+                      {/* <div className="filter-title">Keyword</div> */}
+                      <select
+                        style={{ border: "1px solid black",borderColor:'#343434',color:'#343434',  borderRadius: "10px" }}
+                        value={selectedKeyword || ""}
+                        onChange={(e) => setSelectedKeyword(e.target.value)}
+                      >
+                        <option value="">Select Keyword</option>
+                        {uniqueKeywords.map((keyword) => (
+                          <option key={keyword} value={keyword}>
+                            {keyword}
+                          </option>
+                        ))}
+                      </select>
+                      {/* <div className="filter-title">Month</div> */}
+                      {/* Date Filters */}
+                      <select
+                        style={{ border: "1px solid black",borderColor:'#343434',color:'#343434',  borderRadius: "10px" }}
+                        value={selectedMonth || ""}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                      >
+                        <option value="">Select Month</option>
+                        {uniqueMonths.map((month) => (
+                          <option key={month} value={month}>
+                            {month}
+                          </option>
+                        ))}
+                      </select>
+                      {/* ...other left-side filters if any... */}
+                      {/* <div className="filter-title">Year</div> */}
+                      {/* Date Filters */}
+                      <select
+                        style={{ border: "1px solid black",borderColor:'#343434', color:'#343434', borderRadius: "10px" }}
+                        value={selectedYear || ""}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                      >
+                        <option value="">Select Year</option>
+                        {uniqueYears.map((year) => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                      {/* <div className="filter-title">Court Name</div> */}
+                      <select
+                        style={{ border: "1px solid black",borderColor:'#343434', color:'#343434', borderRadius: "10px" }}
+                        value={selectedCourt || ""}
+                        onChange={(e) => setSelectedCourt(e.target.value)}
+                      >
+                        <option value="">Select Court Name</option>
+                        {uniqueCourts.map((court) => (
+                          <option key={court} value={court}>
+                            {court}
+                          </option>
+                        ))}
+                      </select>
+                      
+                     
+
+                      {/* ...other right-side filters if any... */}
+                      {/* </div> */}
+                    </div>)
+                  }
 
 
                 </div>
@@ -1663,8 +1727,8 @@ function App() {
                     <input id="querr"
                       type="text"
                       value={searchQuery}
-                      style={{ borderRadius: '10px',}}
-                  
+                      style={{ borderRadius: '10px', }}
+
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => setShowSuggestions(true)}
 
@@ -1707,232 +1771,232 @@ function App() {
 
                   {/* <div>Related Items: {keywo}</div> */}
                   <div>
-                          {results && (<div className="toggle">
-                            <div>
-                              {/* <label className="switch-label">Sort by Date</label>
+                    {results && (<div className="toggle">
+                      <div>
+                        {/* <label className="switch-label">Sort by Date</label>
                               <label className="switch">
                                 <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
                                 <span className="slider round"></span>
                               </label> */}
-                              {/* {sortByDate && ( */}
-                              {/* <div>
+                        {/* {sortByDate && ( */}
+                        {/* <div>
                                 <button onClick={toggleSortDirection} onChange={toggleSortMode}>
                                   {sortDirection === "newer" ? "Oldest to Newest ⬇️" : "Newest to Oldest ⬆️"}
                                 </button>
                               </div> */}
-                               <div className="toggle">
-                                {sortByDate && (
-                      <div>
-                        <button onClick={toggleSortDirection}>
-                          {sortDirection === "newer" ? "Newest to Oldest ⬇️" : "Oldest to Newest ⬆️"}
-                        </button>
-                      </div>
-                    )}
-                  <div>
-                    <label className="switch-label">Sort by Date</label>
-                    <label className="switch">
-                      <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
-                      <span className="slider round"></span>
-                    </label>
-                    
-                  </div>
-                  {/* <div>
+                        <div className="toggle">
+                          {sortByDate && (
+                            <div>
+                              <button onClick={toggleSortDirection}>
+                                {sortDirection === "newer" ? "Newest to Oldest ⬇️" : "Oldest to Newest ⬆️"}
+                              </button>
+                            </div>
+                          )}
+                          <div>
+                            <label className="switch-label">Sort by Date</label>
+                            <label className="switch">
+                              <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
+                              <span className="slider round"></span>
+                            </label>
+
+                          </div>
+                          {/* <div>
                     <label className="switch-label">Sort by Case Name</label>
                     <label className="switch">
                       <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
                       <span className="slider round"></span>
                     </label>
                   </div> */}
-                  {/* <div>
+                          {/* <div>
                   <label className="switch-label">Group by Score</label>
                   <label className="switch">
                     <input type="checkbox" checked={group} onChange={togglegroupedMode} />
                     <span className="slider round"></span>
                   </label>
                 </div> */}
-                </div>
-                              {/* )} */}
-                            </div>
+                        </div>
+                        {/* )} */}
+                      </div>
 
-                            <div>
-                              <label className="switch-label">Sort by Case Name</label>
-                              <label className="switch">
-                                <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
-                                <span className="slider round"></span>
-                              </label>
-                            </div>
+                      <div>
+                        <label className="switch-label">Sort by Case Name</label>
+                        <label className="switch">
+                          <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
 
 
-                            {/* <div>
+                      {/* <div>
                       <label className="switch-label">Group by Score</label>
                       <label className="switch">
                         <input type="checkbox" checked={group} onChange={togglegroupedMode} />
                         <span className="slider round"></span>
                       </label>
                     </div>*/}
-                          </div>)}
-                        </div>
+                    </div>)}
+                  </div>
                   <div className="search-results-container">
-                    
-                  <div className="search-results">
-                    {loading ? (
-                      <div className="spinner-overlay">
-                        <div className='spinner'>
 
-                          <Lottie animationData={nopage} loop={true} renderer={'svg'} />
-                          {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
+                    <div className="search-results">
+                      {loading ? (
+                        <div className="spinner-overlay">
+                          <div className='spinner'>
+
+                            <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                            {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
+                          </div>
                         </div>
-                      </div>
-                      // <div className="loading-bar">
-                      //   Loading...
-                      // </div>
-                    ) : (
-                      <div>
-                        {/* <button onClick={toggleSortMode} className="toggle-button">
+                        // <div className="loading-bar">
+                        //   Loading...
+                        // </div>
+                      ) : (
+                        <div>
+                          {/* <button onClick={toggleSortMode} className="toggle-button">
                             {sortByDate ? 'Sort by Score' : 'Sort by Date'}
                             </button>
                             <button onClick={togglegroupedMode} className="toggle-button">
                             {group ? "Normal" : 'Sort by group'}
                             </button> */}
-                        
 
-                        {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
 
-                        {sortByCaseName ? (
-                          Object.values(
-                            results.reduce((acc, item) => {
-                              // const caseName = item[1].metadata["Case Name"] || "Not Available";
-                              const caseName = (item[1].metadata["Case Name"] || "Not Available").replace(/\d+/g, '');
-                              if (!acc[caseName]) {
-                                acc[caseName] = {
-                                  caseName,
-                                  items: [],
-                                  isOpen: true,
-                                };
-                              }
-                              acc[caseName].items.push(item);
-                              return acc;
-                            }, {})
-                          ).map((group, index) => (
-                            <div key={group.caseName} style={{borderRadius:'5px', borderWidth:'0.5px', borderColor:'black', backgroundColor: index % 2 === 0 ? '#e7e3e3' : '#c3c3c6', marginBottom: index !== group.length - 1 ? '20px' : '0' }}>
-                              <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between',  padding: '5',textAlign:"center"}}>
-                                <div style={{ fontSize: '1.2em',  padding: '10px'}}><strong>{group.caseName}</strong></div>
-                                <span className="accordion-toggle" style={{ fontSize: '2em', paddingRight: '10px',textAlign:"center" }}>
-                                  {openAccordion.includes(group.caseName) ? "-" : "+"}
-                                </span>
-                              </div>
-                              {openAccordion.includes(group.caseName) && (
-                                <div>
-                                  {group.items
-                                    .sort((a, b) => {
-                                      if (sortByDate) {
-                                        const dateA = new Date(a[1].metadata.Date);
-                                        const dateB = new Date(b[1].metadata.Date);
-                                        return sortDirectionFactor * (dateB - dateA); // Apply the sort direction factor
-                                      } else {
-                                        return 0; // No sorting if only sorting by case name
-                                      }
-                                    })
-                                    .map((iitem, iindex) => (
-                                      <div key={`${group.caseName}_${iindex}`} style={{ padding: '10px' }}>
-                                        <ResultCard
-                                          key={`${group.caseName}_${iindex}`}
-                                          item={iitem}
-                                          searchWords={keywo}
-                                          sortByCaseName={sortByCaseName}
-                                        />
-                                      </div>
-                                    ))}
+                          {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
+
+                          {sortByCaseName ? (
+                            Object.values(
+                              results.reduce((acc, item) => {
+                                // const caseName = item[1].metadata["Case Name"] || "Not Available";
+                                const caseName = (item[1].metadata["Case Name"] || "Not Available").replace(/\d+/g, '');
+                                if (!acc[caseName]) {
+                                  acc[caseName] = {
+                                    caseName,
+                                    items: [],
+                                    isOpen: true,
+                                  };
+                                }
+                                acc[caseName].items.push(item);
+                                return acc;
+                              }, {})
+                            ).map((group, index) => (
+                              <div key={group.caseName} style={{ borderRadius: '5px', borderWidth: '0.5px', borderColor: 'black', backgroundColor: index % 2 === 0 ? '#e7e3e3' : '#c3c3c6', marginBottom: index !== group.length - 1 ? '20px' : '0' }}>
+                                <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between', padding: '5', textAlign: "center" }}>
+                                  <div style={{ fontSize: '1.2em', padding: '10px' }}><strong>{group.caseName}</strong></div>
+                                  <span className="accordion-toggle" style={{ fontSize: '2em', paddingRight: '10px', textAlign: "center" }}>
+                                    {openAccordion.includes(group.caseName) ? "-" : "+"}
+                                  </span>
                                 </div>
-                              )}
-                            </div>
-                          ))
-                        ) : groupedResults ? (
-                          Object.keys(groupedResults)
-                            .sort((a, b) => parseInt(b) - parseInt(a))
-                            .map((scoreGroup) => (
-                              <div key={scoreGroup}>
-                                <p>Score: {scoreGroup}%</p>
-                                {groupedResults[scoreGroup]
-                                  .sort((a, b) => {
-                                    const dateA = new Date(a[1].metadata.Date);
-                                    const dateB = new Date(b[1].metadata.Date);
-                                    return dateB - dateA;
-                                  })
-                                  .map((item, index) => (
-                                    // <ResultCard key={index} item={item} searchWords={keywo} />
-                                    <ResultCard key={`${scoreGroup}_${index}`} item={item} searchWords={keywo} sortByCaseName={sortByCaseName} />
-                                  ))}
+                                {openAccordion.includes(group.caseName) && (
+                                  <div>
+                                    {group.items
+                                      .sort((a, b) => {
+                                        if (sortByDate) {
+                                          const dateA = new Date(a[1].metadata.Date);
+                                          const dateB = new Date(b[1].metadata.Date);
+                                          return sortDirectionFactor * (dateB - dateA); // Apply the sort direction factor
+                                        } else {
+                                          return 0; // No sorting if only sorting by case name
+                                        }
+                                      })
+                                      .map((iitem, iindex) => (
+                                        <div key={`${group.caseName}_${iindex}`} style={{ padding: '10px' }}>
+                                          <ResultCard
+                                            key={`${group.caseName}_${iindex}`}
+                                            item={iitem}
+                                            searchWords={keywo}
+                                            sortByCaseName={sortByCaseName}
+                                          />
+                                        </div>
+                                      ))}
+                                  </div>
+                                )}
                               </div>
                             ))
-                        ) : (
-                          results &&
-                          (results.length > 0 ? (
-                            // setSearchPerformed(true),
-                            results
-                              .sort((a, b) => {
-                                // Custom sorting function to place cards with case name "Not Available" at the bottom
-                                const caseNameA = a[1].metadata["Case Name"] || '';
-                                const caseNameB = b[1].metadata["Case Name"] || '';
-
-                                // Compare case names
-                                if (
-                                  (caseNameA === "Not Available" && caseNameB !== "Not Available") ||
-                                  (caseNameA === "" && caseNameB !== "") ||
-                                  (caseNameA === "Not found" && caseNameB !== "Not found") ||
-                                  (caseNameA === "Not mentioned" && caseNameB !== "Not mentioned")
-                                ) {
-                                  return 1; // Place case name "Not Available" at the bottom
-                                } else if (
-                                  (caseNameA !== "Not Available" && caseNameB === "Not Available") ||
-                                  (caseNameA !== "" && caseNameB === "") ||
-                                  (caseNameA !== "Not found" && caseNameB === "Not found") ||
-                                  (caseNameA !== "Not mentioned" && caseNameB === "Not mentioned")
-                                ) {
-                                  return -1; // Place case name "Not Available" at the bottom
-                                }
-
-                                // Compare empty fields count
-                                const getEmptyFieldsCount = (item) => {
-                                  let count = 0;
-                                  if (!item[1].metadata["Case Name"] || item[1].metadata["Case Name"] === "Not Available") count++;
-                                  if (!item[1].metadata["Case Summary"] || item[1].metadata["Case Summary"] === "Not Available") count++;
-                                  if (!item[1].metadata["Document Summary"] || item[1].metadata["Document Summary"] === "Not Available") count++;
-                                  if (!item[1].metadata["Case URL"]) count++;
-                                  if (!item[1].metadata["PDF URL"]) count++;
-                                  if (!item[1].metadata["URL"]) count++;
-                                  return count;
-                                };
-
-                                const emptyFieldsCountA = getEmptyFieldsCount(a);
-                                const emptyFieldsCountB = getEmptyFieldsCount(b);
-
-                                if (emptyFieldsCountA > emptyFieldsCountB) {
-                                  return 1; // Place item with more empty fields at the bottom
-                                } else if (emptyFieldsCountA < emptyFieldsCountB) {
-                                  return -1; // Place item with fewer empty fields at the top
-                                }
-
-                                return 0; // Maintain original order if everything else is equal
-                              })
-                              .map((item, index) => (
-                                <ResultCard
-                                  key={index}
-                                  item={item}
-                                  searchWords={keywo}
-                                  sortByCaseName={sortByCaseName}
-                                />
+                          ) : groupedResults ? (
+                            Object.keys(groupedResults)
+                              .sort((a, b) => parseInt(b) - parseInt(a))
+                              .map((scoreGroup) => (
+                                <div key={scoreGroup}>
+                                  <p>Score: {scoreGroup}%</p>
+                                  {groupedResults[scoreGroup]
+                                    .sort((a, b) => {
+                                      const dateA = new Date(a[1].metadata.Date);
+                                      const dateB = new Date(b[1].metadata.Date);
+                                      return dateB - dateA;
+                                    })
+                                    .map((item, index) => (
+                                      // <ResultCard key={index} item={item} searchWords={keywo} />
+                                      <ResultCard key={`${scoreGroup}_${index}`} item={item} searchWords={keywo} sortByCaseName={sortByCaseName} />
+                                    ))}
+                                </div>
                               ))
                           ) : (
+                            results &&
+                            (results.length > 0 ? (
+                              // setSearchPerformed(true),
+                              results
+                                .sort((a, b) => {
+                                  // Custom sorting function to place cards with case name "Not Available" at the bottom
+                                  const caseNameA = a[1].metadata["Case Name"] || '';
+                                  const caseNameB = b[1].metadata["Case Name"] || '';
+
+                                  // Compare case names
+                                  if (
+                                    (caseNameA === "Not Available" && caseNameB !== "Not Available") ||
+                                    (caseNameA === "" && caseNameB !== "") ||
+                                    (caseNameA === "Not found" && caseNameB !== "Not found") ||
+                                    (caseNameA === "Not mentioned" && caseNameB !== "Not mentioned")
+                                  ) {
+                                    return 1; // Place case name "Not Available" at the bottom
+                                  } else if (
+                                    (caseNameA !== "Not Available" && caseNameB === "Not Available") ||
+                                    (caseNameA !== "" && caseNameB === "") ||
+                                    (caseNameA !== "Not found" && caseNameB === "Not found") ||
+                                    (caseNameA !== "Not mentioned" && caseNameB === "Not mentioned")
+                                  ) {
+                                    return -1; // Place case name "Not Available" at the bottom
+                                  }
+
+                                  // Compare empty fields count
+                                  const getEmptyFieldsCount = (item) => {
+                                    let count = 0;
+                                    if (!item[1].metadata["Case Name"] || item[1].metadata["Case Name"] === "Not Available") count++;
+                                    if (!item[1].metadata["Case Summary"] || item[1].metadata["Case Summary"] === "Not Available") count++;
+                                    if (!item[1].metadata["Document Summary"] || item[1].metadata["Document Summary"] === "Not Available") count++;
+                                    if (!item[1].metadata["Case URL"]) count++;
+                                    if (!item[1].metadata["PDF URL"]) count++;
+                                    if (!item[1].metadata["URL"]) count++;
+                                    return count;
+                                  };
+
+                                  const emptyFieldsCountA = getEmptyFieldsCount(a);
+                                  const emptyFieldsCountB = getEmptyFieldsCount(b);
+
+                                  if (emptyFieldsCountA > emptyFieldsCountB) {
+                                    return 1; // Place item with more empty fields at the bottom
+                                  } else if (emptyFieldsCountA < emptyFieldsCountB) {
+                                    return -1; // Place item with fewer empty fields at the top
+                                  }
+
+                                  return 0; // Maintain original order if everything else is equal
+                                })
+                                .map((item, index) => (
+                                  <ResultCard
+                                    key={index}
+                                    item={item}
+                                    searchWords={keywo}
+                                    sortByCaseName={sortByCaseName}
+                                  />
+                                ))
+                            ) : (
+                              searchPerformed && <p>No cases found.</p>
+                            ))
+                          )}
+                          {!groupedResults && !results && (
                             searchPerformed && <p>No cases found.</p>
-                          ))
-                        )}
-                        {!groupedResults && !results && (
-                          searchPerformed && <p>No cases found.</p>
-                        )}
-                      </div>
-                    )}
-                  </div></div>
+                          )}
+                        </div>
+                      )}
+                    </div></div>
                 </div>
               </div>
             )}
@@ -2064,7 +2128,7 @@ function App() {
                         {sortByCaseName && (
                           <div>
                             <button onClick={setOpenAccordion(true)}>
-                              {openAccordion  ? "Expand All" : "Collapse All"}
+                              {openAccordion ? "Expand All" : "Collapse All"}
                             </button>
                           </div>
                         )}
