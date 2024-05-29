@@ -1520,7 +1520,7 @@ function App() {
         </div>
         <div style={{ paddingTop: '5px' }}>
         <div style={{ paddingTop: '5px' }}>
-              <button className="btn btn-primary submit-button" onClick={handleFeedback}>
+              <button className="btn btn-primary submit-button" onClick={feedback}>
                 Submit 
               </button>
               {isSubmitted && <div className="submission-message">Thanks for submission</div>}
