@@ -1496,7 +1496,7 @@ function App() {
       {isCollapsed ? (
     <div className="chatbot-icon" onClick={toggleCollapse}>
       {/* Feedback */}
-      <FeedbackIcon/>
+      <FeedbackIcon style={{width:'50px',height:'50px'}}/>
     </div>
   ) : (
     <div className="close-icon" style={{fontWeight:'20px'}} onClick={toggleCollapse}>
