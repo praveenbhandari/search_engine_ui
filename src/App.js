@@ -1499,8 +1499,10 @@ function App() {
       <FeedbackIcon style={{width:'50px',height:'50px'}}/>
     </div>
   ) : (
+    <div style={{color:'red'}}>
     <div className="close-icon" style={{fontWeight:'20px'}} onClick={toggleCollapse}>
       &#x2715; {/* Unicode character for the cross icon */}
+    </div>
     </div>
   )}
   <div className={`card-container ${isCollapsed ? 'collapsed' : ''}`}>
