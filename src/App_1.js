@@ -696,19 +696,19 @@ ResultCard.propTypes = {
   // Keywords: PropTypes.arrayOf(PropTypes.string), 
   // })
 };
-const paypalSubscribe = (data, actions) => {
-  return actions.subscription.create({
-    'plan_id': 'P-8R920298L5863443KMZMWUMI',
-  });
-};
-const paypalOnError = (err) => {
-  console.log("Error")
-}
-const paypalOnApprove = (data, detail) => {
-  // call the backend api to store transaction details
-  console.log("Payapl approved")
-  console.log(data.subscriptionID)
-};
+// const paypalSubscribe = (data, actions) => {
+//   return actions.subscription.create({
+//     'plan_id': 'P-8R920298L5863443KMZMWUMI',
+//   });
+// };
+// const paypalOnError = (err) => {
+//   console.log("Error")
+// }
+// const paypalOnApprove = (data, detail) => {
+//   // call the backend api to store transaction details
+//   console.log("Payapl approved")
+//   console.log(data.subscriptionID)
+// };
 function App() {
 
   // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
