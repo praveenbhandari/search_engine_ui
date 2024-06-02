@@ -1,26 +1,59 @@
 
 import "./styles.css";
-import React, { useState, useEffect, useCallback, useRef, Link } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+// import { RemoteRunnable } from "langchain/runnables/remote";
 import PropTypes from "prop-types";
 import axios from 'axios';
+// import Switch from '@mui/material/Switch';
 import Highlighter from "react-highlight-words";
 import LoginModal from "./login";
 import imag from './HRD.png'
+// import Lottie from "lottie-react";
 import { ClipLoader } from 'react-spinners';
 import ReactGA from 'react-ga4';
 ReactGA.initialize('G-CBKKVT259T');
 import { FocusOn } from 'react-focus-on';
-import { ReactComponent as FeedbackIcon } from './feedback-icon.svg'; import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
-import AboutUs from "./aboutus";
-import ContactUs from "./contact_us";
-import TermsnCondition from "./terms";
-import PrivacyPolicy from "./privacy";
-import Pricing from "./Pricing";
+// import PayPalButton from "./Pay_button";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+import AboutUs from './aboutus';
+// import PayPalBtn from "./payPalBtn";
+// import Container from 'react-bootstrap/Container';
+// import Nav from 'react-bootstrap/Nav';
+// import Navbar from 'react-bootstrap/Navbar';
+// import button from 'react-bootstrap/Button';
+// import RazorpayCheckout from 'react-native-razorpay';
+// or less ideally
+import { Button } from 'react-bootstrap';
+import { ReactComponent as FeedbackIcon } from './feedback-icon.svg';
+// import feed from "./"
+// import Container from 'react-bootstrap/Container';
+// import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+// import 'nextui/dist/index.css';
+// import AppBar from '@mui/material/AppBar';
+// import Box from '@mui/material/Box';
+// import Toolbar from '@mui/material/Toolbar';
+// import Typography from '@mui/material/Typography';
+// import IconButton from '@mui/material/IconButton';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import AccountCircle from '@mui/icons-material/AccountCircle';
+// import Switch from '@mui/material/Switch';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import FormGroup from '@mui/material/FormGroup';
+// import MenuItem from '@mui/material/MenuItem';
+// import Menu from '@mui/material/Menu';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 
-import nopage from "./lottie/nopg.json";
+// import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
+// const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
+// import nopage from "./lottie/nopg.json";
 
 import DesktopViewPrompt from './Desktopprompt';
+import Feedback from "./feedback";
+import Search_content from "./search";
 
 function formatDate(dateString) {
   if (!dateString || isNaN(Date.parse(dateString))) {
@@ -229,7 +262,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
                   <button
                     key={index}
                     className="keyword-button"
-                    onClick={() => handleKeywordClick(keyword)}
+                  // onClick={() => handleKeywordClick(keyword)}
                   >
                     {keyword}
                   </button>
@@ -432,7 +465,7 @@ function ResultCard({ item, searchWords, scores, sortByCaseName }) {
                     <button
                       key={index}
                       className="keyword-button"
-                      onClick={() => handleKeywordClick(keyword)}
+                    // onClick={() => handleKeywordClick(keyword)}
                     >
                       {/* {keyword} */}
                       <Highlighter
@@ -663,8 +696,37 @@ ResultCard.propTypes = {
   // Keywords: PropTypes.arrayOf(PropTypes.string), 
   // })
 };
-
+const paypalSubscribe = (data, actions) => {
+  return actions.subscription.create({
+    'plan_id': 'P-8R920298L5863443KMZMWUMI',
+  });
+};
+const paypalOnError = (err) => {
+  console.log("Error")
+}
+const paypalOnApprove = (data, detail) => {
+  // call the backend api to store transaction details
+  console.log("Payapl approved")
+  console.log(data.subscriptionID)
+};
 function App() {
+
+  // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
+  // export default function App() {
+  const initialOptions = {
+    clientId: "AbCLixrKCGX9mnyIbzWDdSfagpOl4nJ1JtepgdrhybJd53GoIVCcIQuTARiQhmuiyAC49S164GvNXHsz",
+    // Add other options as needed
+  };
+  //     return (
+  //         <div className="App">
+  //             <PayPalScriptProvider options={initialOptions}>
+  //                 <PayPalButtons />
+  //             </PayPalScriptProvider>
+  //         </div>
+  //     );
+  // }
+
   const [searchQuery, setSearchQuery] = useState(null);
   // const [searchQuery, setSearchQuery] = useState("");
   // const [filters, setFilters] = useState({
@@ -1353,17 +1415,39 @@ function App() {
   // const [isCollapsed, setIsCollapsed] = useState(true);
   // const [feedbackData, setFeedbackData] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [page, setPage] = useState("home");
-
-  // Function to handle changing the page
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
 
   const feedback = async () => {
     await axios.post(backend_url + '/feedback', { user_id: s_user_id, query: feedback_data, ip: ip, location: location }).then(handleFeedback);
 
   }
+  // var instance = new Razorpay({ key_id: 'YOUR_KEY_ID', key_secret: 'YOUR_SECRET' })
+
+  // const pay=()=>{
+  // //   <TouchableHighlight onPress={() => {
+  // //     var options = {
+  // //     description: 'Credits towards consultation',
+  // //     image: 'https://i.imgur.com/3g7nmJC.jpg',
+  // //     currency: 'INR',
+  // //     key: '<YOUR_KEY_ID>',
+  // //     amount: '5000',
+  // //     name: 'Acme Corp',
+  // //     order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
+  // //     prefill: {
+  // //       email: 'gaurav.kumar@example.com',
+  // //       contact: '9191919191',
+  // //       name: 'Gaurav Kumar'
+  // //     },
+  // //     theme: {color: '#53a20e'}
+  // //   }
+  // //   RazorpayCheckout.open(options).then((data) => {
+  // //     // handle success
+  // //     alert(`Success: ${data.razorpay_payment_id}`);
+  // //   }).catch((error) => {
+  // //     // handle failure
+  // //     alert(`Error: ${error.code} | ${error.description}`);
+  // //   });
+  // // }}/>
+  // }
   const handleFeedback = () => {
     // Handle the feedback submission logic here
     setIsSubmitted(true);
@@ -1373,25 +1457,84 @@ function App() {
       setFeedback_data(''); // Clear feedback data
     }, 2000); // Display message for 2 seconds
   };
+
+
+  const createOrder = async () => {
+    try {
+      const response = await fetch("/my-server/create-paypal-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cart: [{ id: "11", quantity: "21" }],
+        }),
+      });
+
+      const orderData = await response.json();
+
+      if (!orderData.id) {
+        const errorDetail = orderData.details[0];
+        const errorMessage = errorDetail
+          ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+          : "Unexpected error occurred, please try again.";
+
+        throw new Error(errorMessage);
+      }
+
+      return orderData.id;
+
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  const onApprove = async (data) => {
+    // Capture the funds from the transaction.
+    const response = await fetch("/my-server/capture-paypal-order", {
+      method: "POST",
+      body: JSON.stringify({
+        orderID: data.orderID
+      })
+    });
+
+    const details = await response.json();
+
+    // Show success message to buyer
+    console.log(details)
+    // console.log()
+    alert(`Transaction completed by ${details.payer.name.given_name}`);
+  }
+
+
+  // const pay_s=(){
+
+  // }
+
+
+
   return (
-    <div>
-      <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
-        <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{ zIndex: 9999 }}>
-          {/* Logo */}
-          
-      {(results || page !== "home")  && (
-            <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-              <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { handlePageChange("home") }} />
-            </div>
-          )}
+    <BrowserRouter>
+      <div>
+        <div>
+          <DesktopViewPrompt />
+        </div>
 
-          {/* Menu or User Actions */}
-          <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-700 flex flex-wrap items-center text-base justify-center">
-            {/* Add menu items here if needed */}
-          </nav>
+        <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
+          <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{ zIndex: 9999 }}>
+            {/* Logo */}
+            {results && (
+              <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+                <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { setResults(null) }} />
+              </div>
+            )}
 
-          {/* User Login/Logout */}
-          {/* <div style={{ display: 'flex', alignItems: 'center' }}>
+            {/* Menu or User Actions */}
+            <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-700 flex flex-wrap items-center text-base justify-center">
+              {/* Add menu items here if needed */}
+            </nav>
+
+            {/* User Login/Logout */}
+            {/* <div style={{ display: 'flex', alignItems: 'center' }}>
             {user ? (
               <div className="text-gray-900 mr-2">Welcome, {user.name}!</div>
             ) : (
@@ -1413,890 +1556,209 @@ function App() {
             )}
           </div> */}
 
-          <div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
-            {user ? (
-              <div className="relative">
-                <div
-                  ref={avatarRef}
-                  className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full cursor-pointer"
-                  onClick={toggleDropdown}
-                >
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                {dropdownOpen && (
+            <div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
+              {user ? (
+                <div className="relative">
                   <div
-                    ref={dropdownRef}
-                    className="fixed w-40 bg-white border rounded-lg shadow-lg"
-                    style={{ top: dropdownPosition.top, left: dropdownPosition.left, zIndex: 1000 }}
+                    ref={avatarRef}
+                    className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full cursor-pointer"
+                    onClick={toggleDropdown}
                   >
-                    <div>
-                      <div className="text-gray-900 p-2">Welcome {user.name}</div>
-                    </div>
-                    <div >
-                      <button
-                        onClick={logoutUser}
-                        className=" px-2 py-1 flex items-center justify-between border rounded-b-lg bg-red-600 focus:outline-none hover:bg-red-700 text-white w-full"
-                      //  style={{ padding: '0', borderRadius: '0 0 10px 10px' }}
-                      >
-                        Logout
-                        <div >
-                          <svg width="26" height="15" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.5478 19.2357C18.5527 18.6014 18.138 18.1612 17.5628 18.1676C16.9974 18.174 16.6008 18.6092 16.5979 19.2328C16.5949 19.8021 16.5979 20.3719 16.5969 20.9412C16.5949 22.2245 15.7743 23.0461 14.4909 23.0466C11.3261 23.0476 8.16081 23.0476 4.996 23.0466C3.6975 23.0466 2.87781 22.2274 2.87781 20.9289C2.87732 15.308 2.87732 9.68702 2.87781 4.06606C2.87781 2.78272 3.69995 1.9601 4.98279 1.95961C8.15592 1.95863 11.329 1.95814 14.5022 1.95961C15.7689 1.9601 16.5935 2.78615 16.5969 4.05188C16.5984 4.66175 16.5881 5.27212 16.6018 5.882C16.614 6.42732 17.0449 6.83912 17.5741 6.83863C18.1032 6.83863 18.5366 6.42683 18.5449 5.88102C18.5561 5.14105 18.5693 4.39961 18.5361 3.66061C18.4632 2.02319 17.2498 0.550088 15.6569 0.15198C15.3209 0.0678586 14.9678 0.0135711 14.6225 0.0125929C11.3682 0.00232233 8.11337 -0.00990459 4.85906 0.013082C3.2006 0.025798 1.99552 0.824949 1.27853 2.3181C1.10637 2.67708 1.03986 3.08693 0.924927 3.4733V21.5344C1.05013 21.9413 1.1274 22.3712 1.30983 22.7507C1.90846 23.9993 2.91009 24.7354 4.28293 24.9565C4.32058 24.9623 4.35531 24.9853 4.3915 25H15.0837C15.1282 24.9843 15.1712 24.9604 15.2172 24.9535C16.9373 24.6948 18.3013 23.3474 18.495 21.6234C18.5835 20.8355 18.5424 20.0324 18.5483 19.2357H18.5478Z" fill="white" />
-                            <path d="M25.1592 10.7723C24.4534 10.1106 23.7863 9.40775 23.1011 8.72353C23.0551 8.67756 23.0087 8.6311 22.9583 8.59051C22.6453 8.33912 22.2995 8.27896 21.9322 8.44623C21.5664 8.613 21.3737 8.90987 21.359 9.31091C21.3473 9.62295 21.4872 9.87189 21.7063 10.0876C22.1914 10.5644 22.6712 11.0466 23.2019 11.5753H22.8546C19.1372 11.5753 15.4192 11.5753 11.7017 11.5753C11.5961 11.5753 11.4895 11.57 11.3848 11.5822C10.9867 11.6291 10.7001 11.838 10.5592 12.2131C10.4213 12.5794 10.4966 12.9208 10.7568 13.2113C10.9852 13.4661 11.2865 13.5302 11.6191 13.5297C15.3693 13.5263 19.1195 13.5272 22.8698 13.5272H23.2033C22.6712 14.0569 22.1841 14.5245 21.72 15.014C21.5747 15.1671 21.4451 15.3662 21.3898 15.5662C21.2725 15.9907 21.4818 16.4123 21.8574 16.6211C22.2447 16.8363 22.6874 16.783 23.0229 16.4529C23.7418 15.7457 24.4363 15.0126 25.1689 14.32C26.1256 13.4162 26.127 11.6785 25.1592 10.7708V10.7723Z" fill="white" />
-                          </svg>
-                        </div>
-
-                      </button>
-                    </div>
+                    {user.name.charAt(0).toUpperCase()}
                   </div>
+                  {dropdownOpen && (
+                    <div
+                      ref={dropdownRef}
+                      className="fixed w-40 bg-white border rounded-lg shadow-lg"
+                      style={{ top: dropdownPosition.top, left: dropdownPosition.left, zIndex: 1000 }}
+                    >
+                      <div>
+                        <div className="text-gray-900 p-2">Welcome {user.name}</div>
+                      </div>
+                      <div >
+                        <button
+                          onClick={logoutUser}
+                          className=" px-2 py-1 flex items-center justify-between border rounded-b-lg bg-red-600 focus:outline-none hover:bg-red-700 text-white w-full"
+                        //  style={{ padding: '0', borderRadius: '0 0 10px 10px' }}
+                        >
+                          Logout
+                          <div >
+                            <svg width="26" height="15" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18.5478 19.2357C18.5527 18.6014 18.138 18.1612 17.5628 18.1676C16.9974 18.174 16.6008 18.6092 16.5979 19.2328C16.5949 19.8021 16.5979 20.3719 16.5969 20.9412C16.5949 22.2245 15.7743 23.0461 14.4909 23.0466C11.3261 23.0476 8.16081 23.0476 4.996 23.0466C3.6975 23.0466 2.87781 22.2274 2.87781 20.9289C2.87732 15.308 2.87732 9.68702 2.87781 4.06606C2.87781 2.78272 3.69995 1.9601 4.98279 1.95961C8.15592 1.95863 11.329 1.95814 14.5022 1.95961C15.7689 1.9601 16.5935 2.78615 16.5969 4.05188C16.5984 4.66175 16.5881 5.27212 16.6018 5.882C16.614 6.42732 17.0449 6.83912 17.5741 6.83863C18.1032 6.83863 18.5366 6.42683 18.5449 5.88102C18.5561 5.14105 18.5693 4.39961 18.5361 3.66061C18.4632 2.02319 17.2498 0.550088 15.6569 0.15198C15.3209 0.0678586 14.9678 0.0135711 14.6225 0.0125929C11.3682 0.00232233 8.11337 -0.00990459 4.85906 0.013082C3.2006 0.025798 1.99552 0.824949 1.27853 2.3181C1.10637 2.67708 1.03986 3.08693 0.924927 3.4733V21.5344C1.05013 21.9413 1.1274 22.3712 1.30983 22.7507C1.90846 23.9993 2.91009 24.7354 4.28293 24.9565C4.32058 24.9623 4.35531 24.9853 4.3915 25H15.0837C15.1282 24.9843 15.1712 24.9604 15.2172 24.9535C16.9373 24.6948 18.3013 23.3474 18.495 21.6234C18.5835 20.8355 18.5424 20.0324 18.5483 19.2357H18.5478Z" fill="white" />
+                              <path d="M25.1592 10.7723C24.4534 10.1106 23.7863 9.40775 23.1011 8.72353C23.0551 8.67756 23.0087 8.6311 22.9583 8.59051C22.6453 8.33912 22.2995 8.27896 21.9322 8.44623C21.5664 8.613 21.3737 8.90987 21.359 9.31091C21.3473 9.62295 21.4872 9.87189 21.7063 10.0876C22.1914 10.5644 22.6712 11.0466 23.2019 11.5753H22.8546C19.1372 11.5753 15.4192 11.5753 11.7017 11.5753C11.5961 11.5753 11.4895 11.57 11.3848 11.5822C10.9867 11.6291 10.7001 11.838 10.5592 12.2131C10.4213 12.5794 10.4966 12.9208 10.7568 13.2113C10.9852 13.4661 11.2865 13.5302 11.6191 13.5297C15.3693 13.5263 19.1195 13.5272 22.8698 13.5272H23.2033C22.6712 14.0569 22.1841 14.5245 21.72 15.014C21.5747 15.1671 21.4451 15.3662 21.3898 15.5662C21.2725 15.9907 21.4818 16.4123 21.8574 16.6211C22.2447 16.8363 22.6874 16.783 23.0229 16.4529C23.7418 15.7457 24.4363 15.0126 25.1689 14.32C26.1256 13.4162 26.127 11.6785 25.1592 10.7708V10.7723Z" fill="white" />
+                            </svg>
+                          </div>
 
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={handleModalOpen}
-                className="inline-flex items-center bg-[#343434] border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-white mt-4 md:mt-0"
-              >
-                Login
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 ml-1"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </button>
-            )}
-          </div>
-
-        </div>
-      </header>
-      <footer>
-        <span>
-          <button onClick={() => handlePageChange("home")}>Home</button>
-          <button onClick={() => handlePageChange("about-us")}>About Us</button>
-          <button onClick={() => handlePageChange("contact-us")}>Contact Us</button>
-          <button onClick={() => handlePageChange("pricing")}>Pricing</button>
-          <button onClick={() => handlePageChange("tnc")}>Terms & Conditions</button>
-          <button onClick={() => handlePageChange("privacypolicy")}>Privacy Policy</button>
-        </span>
-
-      </footer>
-
-
-      <div className="feedback-wrapper">
-        {isCollapsed ? (
-          <div className="chatbot-icon" onClick={toggleCollapse}>
-            {/* Feedback */}
-            <FeedbackIcon style={{ width: '50px', height: '50px' }} />
-          </div>
-        ) : (
-          <div style={{ color: '#f8f8f8',backgroundColor:"#323232",width:"100%",borderTopRightRadius:'10px',borderTopLeftRadius:'10px' }}>
-            <div className="close-icon" style={{ fontWeight: '20px',fontWeight:'20',padding:5,alignContent:"start",borderTopRightRadius:'10px',borderTopLeftRadius:'10px' }} onClick={toggleCollapse}>
-              &#x2715; {/* Unicode character for the cross icon */}
-            </div>
-          </div>
-        )}
-        <div className={`card-container ${isCollapsed ? 'collapsed' : ''}`}>
-          <div className="card-body">
-            {/* <div className="collapsible-header" onClick={toggleCollapse}> */}
-            {/* <span className={`collapse-icon ${isCollapsed ? 'collapsed' : ''}`}>&#9660;</span> */}
-            {/* </div> */}
-            <div className={`collapsible-body ${isCollapsed ? 'collapsed' : ''}`}>
-              <div className="bottom-input form-group">
-                <textarea
-                  className="form-control"
-                  placeholder="Enter feedback..."
-                  value={feedback_data}
-                  onChange={(e) => setFeedback_data(e.target.value)}
-                  rows="10"
-                ></textarea>
-              </div>
-              <div style={{ paddingTop: '5px' }}>
-                <div style={{ paddingTop: '5px' }}>
-                  <button className="btn btn-primary submit-button" onClick={feedback}>
-                    Submit
-                  </button>
-                  {isSubmitted && <div className="submission-message">Thanks for submission</div>}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
-      {page == "about-us" && (<div><AboutUs /></div>) }
-      {page == "contact-us" && (<div><ContactUs /></div>)}
-      {page == "pricing" && ( <div><Pricing /></div>)}
-      {page == "privacypolicy" && ( <div><PrivacyPolicy /></div>)}
-      {page == "tnc" && ( <div><TermsnCondition /></div>)}
-
-
-      {page == "home" && (
-        <div className="main-container">
-
-          <div>
-            <DesktopViewPrompt />
-          </div>
-
-
-          {isLoggedIn ? (
-            <>
-              {!results && (<div className="full-page-container">
-                <div className="centered-content">
-                  <center>
-                    <div style={{ paddingTop: "200px", paddingBottom: "30px" }}>
-                      <img src={imag} alt="My Image" style={{ width: '221px', height: '102p' }} />
-                    </div></center>
-                  <input
-                    id="querr"
-                    type="text"
-                    value={searchQuery}
-                    onKeyDown={handleKeyDown}
-                    style={{ borderRadius: '10px', }}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setShowSuggestions(true)}
-                    onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
-                    placeholder="Enter search query..."
-                    className="search-query"
-                  />
-                  <button onClick={handleSearch} className="search-button">
-                    Search
-                  </button>
-                  {loading && (
-                    <div className="spinner-overlay">
-                      <div className='spinner'>
-
-                        {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                        <ClipLoader size={150} color={"#123abc"} loading={loading} />
+                        </button>
                       </div>
                     </div>
-                    // <div className="loading-bar">
-                    //   Loading...
-                    // </div>
-                  )}
 
-                  {showSuggestions && suggestions.length > 0 && (
-                    <ul className="suggestions-list">
-                      {suggestions.map((suggestion, index) => (
-                        <li
-                          key={index}
-                          onClick={() => {
-                            setSearchQuery(searchQuery + " " + suggestion.token);
-                          }}
-                          onMouseDown={(e) => e.preventDefault()} // Prevent onBlur from firing on click
-                        >
-                          {suggestion.token}
-                        </li>
-                      ))}
-                    </ul>
                   )}
                 </div>
-              </div>
-              )}
-
-
-
-
-
-
-
-              {results && (
-                <div className="left-filters">
-                  {/* style={  {marginTop:'70px',width:'200px', position: 'fixed', top: '10px', left:'10px'}} */}
-                  <div >
-                    {/* <div>
-                <img src={imag} alt="My Image" style={{ width: '150px', height: 'auto' }} />
-              </div> */}
-                    {results && (
-                      <div >
-                        {/* <div className="filter-title">Parties Involved</div> */}
-                        <select
-                          style={{ border: "1px solid", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedParty || ""}
-                          onChange={(e) => setSelectedParty(e.target.value)}
-                        >
-                          <option value="">Parties Involved</option>
-                          {uniqueParties.map((party) => (
-                            <option key={party} value={party}>
-                              {party}
-                            </option>
-                          ))}
-                        </select>
-
-                        <select
-                          style={{ border: "1px solid ", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedJudge || ""}
-                          onChange={(e) => setSelectedJudge(e.target.value)}
-                        >
-                          <option value="">Judge Involved</option>
-                          {uniqueJudges.map((judge) => (
-                            <option key={judge} value={judge}>
-                              {judge}
-                            </option>
-                          ))}
-                        </select>
-
-                        {/* <div className="filter-title">Document Type</div> */}
-                        <select
-                          style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedDocumentType || ""}
-                          onChange={(e) => setSelectedDocumentType(e.target.value)}
-                        >
-                          <option value="">Document Type</option>
-                          {uniqueDocumentTypes.map((type) => (
-                            <option key={type} value={type}>
-                              {type}
-                            </option>
-                          ))}
-                        </select>
-
-                        {/* <div className="filter-title">Keyword</div> */}
-                        <select
-                          style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedKeyword || ""}
-                          onChange={(e) => setSelectedKeyword(e.target.value)}
-                        >
-                          <option value="">Select Keyword</option>
-                          {uniqueKeywords.map((keyword) => (
-                            <option key={keyword} value={keyword}>
-                              {keyword}
-                            </option>
-                          ))}
-                        </select>
-                        {/* <div className="filter-title">Month</div> */}
-                        {/* Date Filters */}
-                        <select
-                          style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedMonth || ""}
-                          onChange={(e) => setSelectedMonth(e.target.value)}
-                        >
-                          <option value="">Select Month</option>
-                          {uniqueMonths.map((month) => (
-                            <option key={month} value={month}>
-                              {month}
-                            </option>
-                          ))}
-                        </select>
-                        {/* ...other left-side filters if any... */}
-                        {/* <div className="filter-title">Year</div> */}
-                        {/* Date Filters */}
-                        <select
-                          style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedYear || ""}
-                          onChange={(e) => setSelectedYear(e.target.value)}
-                        >
-                          <option value="">Select Year</option>
-                          {uniqueYears.map((year) => (
-                            <option key={year} value={year}>
-                              {year}
-                            </option>
-                          ))}
-                        </select>
-                        {/* <div className="filter-title">Court Name</div> */}
-                        <select
-                          style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
-                          value={selectedCourt || ""}
-                          onChange={(e) => setSelectedCourt(e.target.value)}
-                        >
-                          <option value="">Select Court Name</option>
-                          {uniqueCourts.map((court) => (
-                            <option key={court} value={court}>
-                              {court}
-                            </option>
-                          ))}
-                        </select>
-
-
-
-                        {/* ...other right-side filters if any... */}
-                        {/* </div> */}
-                      </div>)
-                    }
-
-
-                  </div>
-                </div>)}
-
-              {results && (
-                <div  >
-                  <div style={{ justifyContent: 'space-around' }}>
-                    <div className="search-bar">
-                      {/* <h1>Human Rights Dossier</h1> */}
-                      {/* <p>ICC, ICJ, HUDOC/ECHR, UN</p> */}
-                      {/* Filter UI for Keywords */}
-
-                      <input id="querr"
-                        type="text"
-                        value={searchQuery}
-                        style={{ borderRadius: '10px', }}
-
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onFocus={() => setShowSuggestions(true)}
-
-                        onKeyDown={handleKeyDown}
-                        onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
-                        // onChange={fetchSuggestions((e) => setSearchQuery(e.target.value))}. (Score: {suggestion.score})
-                        placeholder="Enter search query..."
-                        className="search-query1"
-                      />
-                      <div style={{ justifyItems: 'center', paddingBottom: '8px' }}>
-                        <center><button onClick={handleSearch} className="search-button">
-                          Search
-                        </button></center> </div>
-                    </div>
-                    {showSuggestions && suggestions.length > 0 && (
-                      <ul>
-                        {suggestions.map((suggestion, index) => (
-                          <li
-                            key={index}
-                            onClick={() => {
-                              setSearchQuery(searchQuery + " " + suggestion.token);
-                              // setShowSuggestions(true);
-                            }}
-                            onMouseDown={(e) => e.preventDefault()} // Prevent onBlur from firing on click
-                          >
-                            {suggestion.token}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-
-                  </div>
-
-                  <div className="central-content">
-                    {!results && <center>
-                      <div style={{ paddingTop: "140px" }}>
-                        <img src={imag} alt="My Image" style={{ width: '221px', height: '102p' }} />
-                      </div></center>}
-
-                    {/* <div>Related Items: {keywo}</div> */}
-                    <div>
-                      {results && (<div className="toggle">
-                        <div>
-                          {/* <label className="switch-label">Sort by Date</label>
-                              <label className="switch">
-                                <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
-                                <span className="slider round"></span>
-                              </label> */}
-                          {/* {sortByDate && ( */}
-                          {/* <div>
-                                <button onClick={toggleSortDirection} onChange={toggleSortMode}>
-                                  {sortDirection === "newer" ? "Oldest to Newest ⬇️" : "Newest to Oldest ⬆️"}
-                                </button>
-                              </div> */}
-                          <div className="toggle">
-                            {sortByDate && (
-                              <div>
-                                <button onClick={toggleSortDirection}>
-                                  {sortDirection === "newer" ? "Newest to Oldest ⬇️" : "Oldest to Newest ⬆️"}
-                                </button>
-                              </div>
-                            )}
-                            <div>
-                              <label className="switch-label">Sort by Date</label>
-                              <label className="switch">
-                                <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
-                                <span className="slider round"></span>
-                              </label>
-
-                            </div>
-                            {/* <div>
-                    <label className="switch-label">Sort by Case Name</label>
-                    <label className="switch">
-                      <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
-                      <span className="slider round"></span>
-                    </label>
-                  </div> */}
-                            {/* <div>
-                  <label className="switch-label">Group by Score</label>
-                  <label className="switch">
-                    <input type="checkbox" checked={group} onChange={togglegroupedMode} />
-                    <span className="slider round"></span>
-                  </label>
-                </div> */}
-                          </div>
-                          {/* )} */}
-                        </div>
-
-                        <div>
-                          <label className="switch-label">Sort by Case Name</label>
-                          <label className="switch">
-                            <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
-                            <span className="slider round"></span>
-                          </label>
-                        </div>
-
-
-                        {/* <div>
-                      <label className="switch-label">Group by Score</label>
-                      <label className="switch">
-                        <input type="checkbox" checked={group} onChange={togglegroupedMode} />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>*/}
-                      </div>)}
-                    </div>
-                    <div className="search-results-container">
-
-                      <div className="search-results">
-                        {loading ? (
-                          <div className="spinner-overlay">
-                            <div className='spinner'>
-
-                              {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                              <ClipLoader size={150} color={"#123abc"} loading={loading} />
-                            </div>
-                          </div>
-                          // <div className="loading-bar">
-                          //   Loading...
-                          // </div>
-                        ) : (
-                          <div>
-                            {/* <button onClick={toggleSortMode} className="toggle-button">
-                            {sortByDate ? 'Sort by Score' : 'Sort by Date'}
-                            </button>
-                            <button onClick={togglegroupedMode} className="toggle-button">
-                            {group ? "Normal" : 'Sort by group'}
-                            </button> */}
-
-
-                            {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
-
-                            {sortByCaseName ? (
-                              Object.values(
-                                results.reduce((acc, item) => {
-                                  // const caseName = item[1].metadata["Case Name"] || "Not Available";
-                                  const caseName = (item[1].metadata["Case Name"] || "Not Available").replace(/\d+/g, '');
-                                  if (!acc[caseName]) {
-                                    acc[caseName] = {
-                                      caseName,
-                                      items: [],
-                                      isOpen: true,
-                                    };
-                                  }
-                                  acc[caseName].items.push(item);
-                                  return acc;
-                                }, {})
-                              ).map((group, index) => (
-                                <div key={group.caseName} style={{ borderRadius: '5px', borderWidth: '0.5px', borderColor: 'black', backgroundColor: index % 2 === 0 ? '#e7e3e3' : '#c3c3c6', marginBottom: index !== group.length - 1 ? '20px' : '0' }}>
-                                  <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between', padding: '5', textAlign: "center" }}>
-                                    <div style={{ fontSize: '1.2em', padding: '10px' }}><strong>{group.caseName}</strong></div>
-                                    <span className="accordion-toggle" style={{ fontSize: '2em', paddingRight: '10px', textAlign: "center" }}>
-                                      {openAccordion.includes(group.caseName) ? "-" : "+"}
-                                    </span>
-                                  </div>
-                                  {openAccordion.includes(group.caseName) && (
-                                    <div>
-                                      {group.items
-                                        .sort((a, b) => {
-                                          if (sortByDate) {
-                                            const dateA = new Date(a[1].metadata.Date);
-                                            const dateB = new Date(b[1].metadata.Date);
-                                            return sortDirectionFactor * (dateB - dateA); // Apply the sort direction factor
-                                          } else {
-                                            return 0; // No sorting if only sorting by case name
-                                          }
-                                        })
-                                        .map((iitem, iindex) => (
-                                          <div key={`${group.caseName}_${iindex}`} style={{ padding: '10px' }}>
-                                            <ResultCard
-                                              key={`${group.caseName}_${iindex}`}
-                                              item={iitem}
-                                              searchWords={keywo}
-                                              sortByCaseName={sortByCaseName}
-                                            />
-                                          </div>
-                                        ))}
-                                    </div>
-                                  )}
-                                </div>
-                              ))
-                            ) : groupedResults ? (
-                              Object.keys(groupedResults)
-                                .sort((a, b) => parseInt(b) - parseInt(a))
-                                .map((scoreGroup) => (
-                                  <div key={scoreGroup}>
-                                    <p>Score: {scoreGroup}%</p>
-                                    {groupedResults[scoreGroup]
-                                      .sort((a, b) => {
-                                        const dateA = new Date(a[1].metadata.Date);
-                                        const dateB = new Date(b[1].metadata.Date);
-                                        return dateB - dateA;
-                                      })
-                                      .map((item, index) => (
-                                        // <ResultCard key={index} item={item} searchWords={keywo} />
-                                        <ResultCard key={`${scoreGroup}_${index}`} item={item} searchWords={keywo} sortByCaseName={sortByCaseName} />
-                                      ))}
-                                  </div>
-                                ))
-                            ) : (
-                              results &&
-                              (results.length > 0 ? (
-                                // setSearchPerformed(true),
-                                results
-                                  .sort((a, b) => {
-                                    // Custom sorting function to place cards with case name "Not Available" at the bottom
-                                    const caseNameA = a[1].metadata["Case Name"] || '';
-                                    const caseNameB = b[1].metadata["Case Name"] || '';
-
-                                    // Compare case names
-                                    if (
-                                      (caseNameA === "Not Available" && caseNameB !== "Not Available") ||
-                                      (caseNameA === "" && caseNameB !== "") ||
-                                      (caseNameA === "Not found" && caseNameB !== "Not found") ||
-                                      (caseNameA === "Not mentioned" && caseNameB !== "Not mentioned")
-                                    ) {
-                                      return 1; // Place case name "Not Available" at the bottom
-                                    } else if (
-                                      (caseNameA !== "Not Available" && caseNameB === "Not Available") ||
-                                      (caseNameA !== "" && caseNameB === "") ||
-                                      (caseNameA !== "Not found" && caseNameB === "Not found") ||
-                                      (caseNameA !== "Not mentioned" && caseNameB === "Not mentioned")
-                                    ) {
-                                      return -1; // Place case name "Not Available" at the bottom
-                                    }
-
-                                    // Compare empty fields count
-                                    const getEmptyFieldsCount = (item) => {
-                                      let count = 0;
-                                      if (!item[1].metadata["Case Name"] || item[1].metadata["Case Name"] === "Not Available") count++;
-                                      if (!item[1].metadata["Case Summary"] || item[1].metadata["Case Summary"] === "Not Available") count++;
-                                      if (!item[1].metadata["Document Summary"] || item[1].metadata["Document Summary"] === "Not Available") count++;
-                                      if (!item[1].metadata["Case URL"]) count++;
-                                      if (!item[1].metadata["PDF URL"]) count++;
-                                      if (!item[1].metadata["URL"]) count++;
-                                      return count;
-                                    };
-
-                                    const emptyFieldsCountA = getEmptyFieldsCount(a);
-                                    const emptyFieldsCountB = getEmptyFieldsCount(b);
-
-                                    if (emptyFieldsCountA > emptyFieldsCountB) {
-                                      return 1; // Place item with more empty fields at the bottom
-                                    } else if (emptyFieldsCountA < emptyFieldsCountB) {
-                                      return -1; // Place item with fewer empty fields at the top
-                                    }
-
-                                    return 0; // Maintain original order if everything else is equal
-                                  })
-                                  .map((item, index) => (
-                                    <ResultCard
-                                      key={index}
-                                      item={item}
-                                      searchWords={keywo}
-                                      sortByCaseName={sortByCaseName}
-                                    />
-                                  ))
-                              ) : (
-                                searchPerformed && <p>No cases found.</p>
-                              ))
-                            )}
-                            {!groupedResults && !results && (
-                              searchPerformed && <p>No cases found.</p>
-                            )}
-                          </div>
-                        )}
-                      </div></div>
-                  </div>
-                </div>
-              )}
-
-
-              {/* {results && (<div className="right-filters">
-              <div>
-                {user ? (
-                  <div style={{ position: 'relative' }}>
-                    { <div style={{ position: 'relative', left: '70px', bottom: '10px' }}>
-                      <button onClick={logoutUser} style={{ top: 0, right: 0, backgroundColor: '#24272a', color: 'red', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Logout</button>
-                    </div>
-                { <div style={{ marginTop: '30px' }}>
-                      <p style={{ fontSize: '15px', fontWeight: 'bold' }}>Welcome,</p>
-                      <p style={{ fontSize: '15px', fontWeight: 'bold' }}>{user.name}!</p>
-                    </div> }
-                  </div>
-
-
-
-
-                ) : (
-                  // <button onClick={handleModalOpen}>Open Login</button>
-                  <div onClick={handleModalOpen} style={{ position: 'absolute', top: 0, right: 0, cursor: 'pointer', padding: '20px' }}>
-                    LoginLogin <FontAwesomeIcon icon={faRightToBracket} size="2x" />
-                  </div>
-                )} }
-
-
-                {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
-
-              </div>
-
-
-
-
-              
-            </div>)} */}
-              {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
-            </>
-          ) : (
-            <div className="parent-div">
-              {/* <div className="central-content">
-            
-            <div className="search-container">
-              <h1>Human Rights Dossier</h1>
-              <input id="querr"
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
-                placeholder="Enter search query..."
-                className="search-query"
-              />
-              {showSuggestions && suggestions.length > 0 && (
-                <ul>
-                  {suggestions.map((suggestion, index) => (
-                    <li
-                      key={index}
-                      onClick={() => {
-                        setSearchQuery(searchQuery + " " + suggestion.token);
-                        
-                      }}
-                      onMouseDown={(e) => e.preventDefault()} 
-                    >
-                      {suggestion.token}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              
-              <button onClick={handleSearch} className="search-button">
-                Search
-              </button>
-              {loading && (
-                <div className="spinner-overlay">
-                  <div className='spinner'>
-
-                    <Lottie animationData={nopage} loop={true} renderer={'svg'} />
-                    
-                  </div>
-                </div>
-                
-              )}
-            </div>
-            </div> */}
-              <div className="search-results">
-                {loading ? (
-                  <div className='spinner'>
-
-                    {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                    <ClipLoader size={150} color={"#123abc"} loading={loading} />
-                  </div>
-                  // <div className="loading-bar">
-                  //   Loading...
-                  // </div>
-                ) : (
-                  <div>
-                    {/* <button onClick={toggleSortMode} className="toggle-button">
-                {sortByDate ? 'Sort by Score' : 'Sort by Date'}
+              ) : (
+                <button
+                  onClick={handleModalOpen}
+                  className="inline-flex items-center bg-[#343434] border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-white mt-4 md:mt-0"
+                >
+                  Login
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="w-4 h-4 ml-1"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                  </svg>
                 </button>
-                <button onClick={togglegroupedMode} className="toggle-button">
-                {group ? "Normal" : 'Sort by group'}
-                </button> */}
-                    <div>
-                      <div className="toggle">
-                        <div>
-                          <label className="switch-label">Sort by Date</label>
-                          <label className="switch">
-                            <input type="checkbox" checked={sortByDate} onChange={toggleSortMode} />
-                            <span className="slider round"></span>
-                          </label>
-                          {sortByDate && (
-                            <div>
-                              <button onClick={toggleSortDirection}>
-                                {sortDirection === "newer" ? "Newer to Older" : "Older to Newer"}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <label className="switch-label">Sort by Case Name</label>
-                          <label className="switch">
-                            <input type="checkbox" checked={sortByCaseName} onChange={toggleSortByCaseName} />
-                            <span className="slider round"></span>
-                          </label>
-                          {sortByCaseName && (
-                            <div>
-                              <button onClick={setOpenAccordion(true)}>
-                                {openAccordion ? "Expand All" : "Collapse All"}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        {/* <div>
-                      <label className="switch-label">Group by Score</label>
-                      <label className="switch">
-                        <input type="checkbox" checked={group} onChange={togglegroupedMode} />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>*/}
-                      </div></div>
-
-                    {/* <Switch {...label} disabled defaultChecked >{sortByDate ? 'Sort by Score' : 'Sort by Date'}</Switch> */}
-
-                    {sortByCaseName ? (
-                      Object.values(
-                        results.reduce((acc, item) => {
-                          // const caseName = item[1].metadata["Case Name"] || "Not Available";
-                          const caseName = (item[1].metadata["Case Name"] || "Not Available").replace(/\d+/g, '');
-                          if (!acc[caseName]) {
-                            acc[caseName] = {
-                              caseName,
-                              items: [],
-                              isOpen: true,
-                            };
-                          }
-                          acc[caseName].items.push(item);
-                          return acc;
-                        }, {})
-                      ).map((group, index) => (
-                        <div key={group.caseName} style={{ backgroundColor: index % 2 === 0 ? '#db9797' : '#bbcb7f', marginBottom: index !== group.length - 1 ? '10px' : '0' }}>
-                          <div className="accordion-header" onClick={() => toggleAccordion(group.caseName)} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
-                            <h4>{group.caseName}</h4>
-                            <span className="accordion-toggle" style={{ fontSize: '3.5em', padding: '5' }}>
-                              {openAccordion.includes(group.caseName) ? "-" : "+"}
-                            </span>
-                          </div>
-                          {openAccordion.includes(group.caseName) && (
-                            <div>
-                              {group.items
-                                .sort((a, b) => {
-                                  if (sortByDate) {
-                                    const dateA = new Date(a[1].metadata.Date);
-                                    const dateB = new Date(b[1].metadata.Date);
-                                    return sortDirectionFactor * (dateB - dateA); // Apply the sort direction factor
-                                  } else {
-                                    return 0; // No sorting if only sorting by case name
-                                  }
-                                })
-                                .map((iitem, iindex) => (
-                                  <div key={`${group.caseName}_${iindex}`} style={{ padding: '10px' }}>
-                                    <ResultCard
-                                      key={`${group.caseName}_${iindex}`}
-                                      item={iitem}
-                                      searchWords={keywo}
-                                      sortByCaseName={sortByCaseName}
-                                    />
-                                  </div>
-                                ))}
-                            </div>
-                          )}
-                        </div>
-                      ))
-                    ) : groupedResults ? (
-                      Object.keys(groupedResults)
-                        .sort((a, b) => parseInt(b) - parseInt(a))
-                        .map((scoreGroup) => (
-                          <div key={scoreGroup}>
-                            <p>Score: {scoreGroup}%</p>
-                            {groupedResults[scoreGroup]
-                              .sort((a, b) => {
-                                const dateA = new Date(a[1].metadata.Date);
-                                const dateB = new Date(b[1].metadata.Date);
-                                return dateB - dateA;
-                              })
-                              .map((item, index) => (
-                                // <ResultCard key={index} item={item} searchWords={keywo} />
-                                <ResultCard key={`${scoreGroup}_${index}`} item={item} searchWords={keywo} sortByCaseName={sortByCaseName} />
-                              ))}
-                          </div>
-                        ))
-                    ) : (
-                      results &&
-                      (results.length > 0 ? (
-                        // setSearchPerformed(true),
-                        results
-                          .sort((a, b) => {
-                            // Custom sorting function to place cards with case name "Not Available" at the bottom
-                            const caseNameA = a[1].metadata["Case Name"] || '';
-                            const caseNameB = b[1].metadata["Case Name"] || '';
-
-                            // Compare case names
-                            if (
-                              (caseNameA === "Not Available" && caseNameB !== "Not Available") ||
-                              (caseNameA === "" && caseNameB !== "") ||
-                              (caseNameA === "Not found" && caseNameB !== "Not found") ||
-                              (caseNameA === "Not mentioned" && caseNameB !== "Not mentioned")
-                            ) {
-                              return 1; // Place case name "Not Available" at the bottom
-                            } else if (
-                              (caseNameA !== "Not Available" && caseNameB === "Not Available") ||
-                              (caseNameA !== "" && caseNameB === "") ||
-                              (caseNameA !== "Not found" && caseNameB === "Not found") ||
-                              (caseNameA !== "Not mentioned" && caseNameB === "Not mentioned")
-                            ) {
-                              return -1; // Place case name "Not Available" at the bottom
-                            }
-
-                            // Compare empty fields count
-                            const getEmptyFieldsCount = (item) => {
-                              let count = 0;
-                              if (!item[1].metadata["Case Name"] || item[1].metadata["Case Name"] === "Not Available") count++;
-                              if (!item[1].metadata["Case Summary"] || item[1].metadata["Case Summary"] === "Not Available") count++;
-                              if (!item[1].metadata["Document Summary"] || item[1].metadata["Document Summary"] === "Not Available") count++;
-                              if (!item[1].metadata["Case URL"]) count++;
-                              if (!item[1].metadata["PDF URL"]) count++;
-                              if (!item[1].metadata["URL"]) count++;
-                              return count;
-                            };
-
-                            const emptyFieldsCountA = getEmptyFieldsCount(a);
-                            const emptyFieldsCountB = getEmptyFieldsCount(b);
-
-                            if (emptyFieldsCountA > emptyFieldsCountB) {
-                              return 1; // Place item with more empty fields at the bottom
-                            } else if (emptyFieldsCountA < emptyFieldsCountB) {
-                              return -1; // Place item with fewer empty fields at the top
-                            }
-
-                            return 0; // Maintain original order if everything else is equal
-                          })
-                          .map((item, index) => (
-                            <ResultCard
-                              key={index}
-                              item={item}
-                              searchWords={keywo}
-                              sortByCaseName={sortByCaseName}
-                            />
-                          ))
-                      ) : (
-                        <p>
-                          No cases found.
-                        </p>
-                      ))
-                    )}
-                    {!groupedResults && !results && (
-                      <p>
-                        No cases found.
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
 
-          )}
-
+          </div>
+        </header>
+        <footer>
+          <span>
+            <Link to="/about-us">About us</Link>
+            
+            <Link to="/contact-us">Contact us</Link>
+            <Link to="/terms&ondition">Terms & Condition</Link>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/cancelation&refund">Cancellation & Refund</Link>
+          </span>
+        </footer>
+        <div>
+          <Feedback 
+          results={results} 
+          isCollapsed={isCollapsed} 
+          toggleCollapse={toggleCollapse} 
+          feedback_data={feedback_data} 
+          feedback={feedback} 
+          isSubmitted={isSubmitted} 
+          setFeedback_data={setFeedback_data} />
+          {/* <Search_content openAccordion={openAccordion} sortDirection={sortDirection} setSelectedParty={setSelectedParty} setSelectedKeyword={setSelectedKeyword} toggleAccordion={toggleAccordion} setSelectedJudge={setSelectedJudge} setSelectedMonth={setSelectedMonth} toggleSortDirection={toggleSortDirection} keywo={keywo} isLoggedIn={isLoggedIn} results={results} searchQuery={searchQuery} setSelectedCourt={setSelectedCourt} searchPerformed={searchPerformed} setSelectedYear={setSelectedYear} handleKeyDown={handleKeyDown} handleSearch={handleSearch} loading={loading} showSuggestions={showSuggestions} modalShow={modalShow} setShowSuggestions={setShowSuggestions} suggestions={suggestions} setSearchQuery={setSearchQuery} ClipLoader={ClipLoader} selectedParty={selectedParty} uniqueCourts={uniqueCourts} uniqueDocumentTypes={uniqueDocumentTypes} uniqueJudges={uniqueJudges} uniqueKeywords={uniqueKeywords} uniqueMonths={uniqueMonths} uniqueParties={uniqueParties} uniqueYears={uniqueYears} selectedJudge={selectedJudge} selectedDocumentType={selectedDocumentType} selectedKeyword={selectedKeyword} selectedCourt={selectedCourt} selectedYear={selectedYear} LoginModal={LoginModal} sortByDate={sortByDate} toggleSortMode={toggleSortMode} sortByCaseName={sortByCaseName} login={login} toggleSortByCaseName={toggleSortByCaseName} groupedResults={groupedResults} ResultCard={ResultCard} /> */}
+        
         </div>
-      )}
+        <Routes>
+          <Route path="/" element={
+          <Search_content 
+          results={results} 
+          sortDirection={sortDirection}
+          setSelectedDocumentType={setSelectedDocumentType}
+          // toggleCollapse={toggleCollapse} 
+          // feedback_data={feedback_data} 
+          // feedback={feedback} 
+          // isSubmitted={isSubmitted} 
+          // setFeedback_data={setFeedback_data} 
+          openAccordion={openAccordion} 
+          setSelectedParty={setSelectedParty} 
+          setSelectedYear={setSelectedYear}
+          setSelectedKeyword={setSelectedKeyword} 
+          toggleAccordion={toggleAccordion} 
+          setSelectedJudge={setSelectedJudge} 
+          setSelectedMonth={setSelectedMonth} 
+          toggleSortDirection={toggleSortDirection} 
+          keywo={keywo} 
+          isLoggedIn={isLoggedIn} 
+          searchQuery={searchQuery} 
+          setSelectedCourt={setSelectedCourt} 
+          // searchPerformed={searchPerformed} 
+          handleKeyDown={handleKeyDown} 
+          handleSearch={handleSearch} 
+          loading={loading} 
+          showSuggestions={showSuggestions} 
+          modalShow={modalShow} 
+          setShowSuggestions={setShowSuggestions} 
+          suggestions={suggestions} 
+          setSearchQuery={setSearchQuery} 
+          // ClipLoader={Cli}
+          selectedParty={selectedParty} 
+          uniqueCourts={uniqueCourts} 
+          uniqueDocumentTypes={uniqueDocumentTypes} 
+          uniqueJudges={uniqueJudges} 
+          uniqueKeywords={uniqueKeywords} 
+          uniqueMonths={uniqueMonths} 
+          uniqueParties={uniqueParties} 
+          uniqueYears={uniqueYears} 
+          selectedJudge={selectedJudge} 
+          selectedDocumentType={selectedDocumentType} 
+          selectedKeyword={selectedKeyword} 
+          selectedCourt={selectedCourt} 
+          selectedYear={selectedYear} 
+          selectedMonth={selectedMonth} 
+          sortByDate={sortByDate} 
+          toggleSortMode={toggleSortMode} 
+          sortByCaseName={sortByCaseName} 
+          login={login} 
+          toggleSortByCaseName={toggleSortByCaseName} 
+          groupedResults={groupedResults} 
+          ResultCard={ResultCard}
+          />} />
 
-    </div>
+
+          <Route path="/about-us" element={
+          <AboutUs 
+          dropdownPosition={dropdownPosition}
+          // results={results} 
+          // isCollapsed={isCollapsed} 
+          user={user} 
+          toggleCollapse={toggleCollapse} 
+          // feedback_data={feedback_data}  
+          toggleDropdown={toggleDropdown} 
+          dropdownOpen={dropdownOpen}   
+          avatarRef={avatarRef}  
+          dropdownRef={dropdownRef}
+          // isSubmitted={isSubmitted} 
+          // setFeedback_data={setFeedback_data} 
+          // openAccordion={openAccordion} 
+          // sortDirection={sortDirection} 
+          // setSelectedParty={setSelectedParty} 
+          // setSelectedKeyword={setSelectedKeyword} 
+          // toggleAccordion={toggleAccordion} 
+          // setSelectedJudge={setSelectedJudge}
+          // setSelectedMonth={setSelectedMonth} 
+          // toggleSortDirection={toggleSortDirection} 
+          // keywo={keywo} 
+          // isLoggedIn={isLoggedIn} 
+          // searchQuery={searchQuery} 
+          // setSelectedCourt={setSelectedCourt} 
+          // searchPerformed={searchPerformed} 
+          // handleKeyDown={handleKeyDown} 
+          // handleSearch={handleSearch} 
+          // loading={loading} 
+          // showSuggestions={showSuggestions} 
+          // modalShow={modalShow} 
+          // setShowSuggestions={setShowSuggestions} 
+          // suggestions={suggestions} 
+          // setSearchQuery={setSearchQuery} 
+          // selectedParty={selectedParty} 
+          // uniqueCourts={uniqueCourts} 
+          // uniqueDocumentTypes={uniqueDocumentTypes} 
+          // uniqueJudges={uniqueJudges} 
+          // uniqueKeywords={uniqueKeywords} 
+          // uniqueMonths={uniqueMonths} 
+          // uniqueParties={uniqueParties} 
+          // uniqueYears={uniqueYears} 
+          // selectedJudge={selectedJudge} 
+          // selectedDocumentType={selectedDocumentType} 
+          // selectedKeyword={selectedKeyword} 
+          // selectedCourt={selectedCourt} 
+          // selectedYear={selectedYear} 
+          // sortByDate={sortByDate} 
+          // toggleSortMode={toggleSortMode} 
+          // sortByCaseName={sortByCaseName} 
+          // login={login} 
+          // toggleSortByCaseName={toggleSortByCaseName} 
+          // groupedResults={groupedResults} 
+          // ResultCard={ResultCard} 
+           />
+          
+          } />
+          {/* Add other routes here */}
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
