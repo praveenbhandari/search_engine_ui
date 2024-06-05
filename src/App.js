@@ -1378,17 +1378,22 @@ function App() {
       <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
         <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{ zIndex: 9999 }}>
           {/* Logo */}
-          
-      {(results || page !== "home")  && (
+
+          {(results || page !== "home") && (
             <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-              <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { handlePageChange("home") }} />
+              <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { handlePageChange("home"); setResults(null)}} />
             </div>
           )}
 
           {/* Menu or User Actions */}
-          <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-700 flex flex-wrap items-center text-base justify-center">
-            {/* Add menu items here if needed */}
+          <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-700 flex flex-wrap items-center text-base justify-between w-3/5">
+            <p onClick={() => handlePageChange("about-us")} className="relative">About Us</p>
+            <p onClick={() => handlePageChange("about-us")} className="relative">Contact Us</p>
+            <p onClick={() => handlePageChange("pricing")} className="relative">Pricing</p>
+            <p onClick={() => handlePageChange("tnc")} className="relative">Terms & Conditions</p>
+            <p onClick={() => handlePageChange("privacypolicy")} className="relative">Privacy Policy</p>
           </nav>
+
 
           {/* User Login/Logout */}
           {/* <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1479,7 +1484,7 @@ function App() {
         <span>
           <button onClick={() => handlePageChange("home")}>Home</button>
           <button onClick={() => handlePageChange("about-us")}>About Us</button>
-          <button onClick={() => handlePageChange("contact-us")}>Contact Us</button>
+          <button onClick={() => handlePageChange("about-us")}>Contact Us</button>
           <button onClick={() => handlePageChange("pricing")}>Pricing</button>
           <button onClick={() => handlePageChange("tnc")}>Terms & Conditions</button>
           <button onClick={() => handlePageChange("privacypolicy")}>Privacy Policy</button>
@@ -1495,8 +1500,8 @@ function App() {
             <FeedbackIcon style={{ width: '50px', height: '50px' }} />
           </div>
         ) : (
-          <div style={{ color: '#f8f8f8',backgroundColor:"#323232",width:"100%",borderTopRightRadius:'10px',borderTopLeftRadius:'10px' }}>
-            <div className="close-icon" style={{ fontWeight: '20px',fontWeight:'20',padding:5,alignContent:"start",borderTopRightRadius:'10px',borderTopLeftRadius:'10px' }} onClick={toggleCollapse}>
+          <div style={{ color: '#f8f8f8', backgroundColor: "#323232", width: "100%", borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}>
+            <div className="close-icon" style={{ fontWeight: '20px', fontWeight: '20', padding: 5, alignContent: "start", borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }} onClick={toggleCollapse}>
               &#x2715; {/* Unicode character for the cross icon */}
             </div>
           </div>
@@ -1529,11 +1534,11 @@ function App() {
         </div>
       </div>
       {modalShow && <LoginModal show={modalShow} handleLogin={login} />}
-      {page == "about-us" && (<div><AboutUs /></div>) }
+      {page == "about-us" && (<div><AboutUs /></div>)}
       {page == "contact-us" && (<div><ContactUs /></div>)}
-      {page == "pricing" && ( <div><Pricing /></div>)}
-      {page == "privacypolicy" && ( <div><PrivacyPolicy /></div>)}
-      {page == "tnc" && ( <div><TermsnCondition /></div>)}
+      {page == "pricing" && (<div><Pricing /></div>)}
+      {page == "privacypolicy" && (<div><PrivacyPolicy /></div>)}
+      {page == "tnc" && (<div><TermsnCondition /></div>)}
 
 
       {page == "home" && (
@@ -1549,7 +1554,7 @@ function App() {
               {!results && (<div className="full-page-container">
                 <div className="centered-content">
                   <center>
-                    <div style={{ paddingTop: "200px", paddingBottom: "30px" }}>
+                    <div style={{ paddingTop: "180px", paddingBottom: "30px" }}>
                       <img src={imag} alt="My Image" style={{ width: '221px', height: '102p' }} />
                     </div></center>
                   <input
@@ -1567,6 +1572,21 @@ function App() {
                   <button onClick={handleSearch} className="search-button">
                     Search
                   </button>
+                  <div className="flex flex-col items-center space-y-4 bg-#f8f8f8">
+    <div style={{ paddingTop: '40px' }}>
+        <p className="text-center text-lg font-medium bg-#f8f8f8" style={{ color: '#2E2E2E' }}>List of Available Courts</p>
+    </div>
+    <div className="w-full text-center bg-#f8f8f8" style={{ color: '#2E2E2E' }}>
+        <p>International Court of Justice(ICJ) <strong>|</strong> European Court of Human Rights(HUDOC/ECHR) <strong>|</strong> International Criminal Court(ICC) <strong>|</strong> United Nations Committee Against Torture(UN CAT) <strong>|</strong></p>
+        <p>United Nations Committee on Economic, Social and Cultural Rights(UN CESCR) <strong>|</strong> United Nations Committee on the Elimination of Racial Discrimination(UN CERD) <strong>|</strong></p>
+        <p>United Nations Committee on the Rights of the Child(UN CRC) <strong>|</strong> United Nations Committee on the Rights of Persons with Disabilities(UN CRPD) <strong>|</strong></p>
+        <p>United Nations Committee on the Elimination of Discrimination against Women(UN CEDAW)</p>
+        <p></p>
+        <p>Committee on Enforced Disappearances(UN CED)<strong>|</strong></p>
+    </div>
+</div>
+
+
                   {loading && (
                     <div className="spinner-overlay">
                       <div className='spinner'>

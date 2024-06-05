@@ -15,8 +15,16 @@
   /* margin-left: 20px; */
   margin-right: 20px;
 }
-
-
+nav p:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -40px; /* Adjust according to your spacing needs */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px; /* Divider width */
+  height: 1.5rem; /* Divider height */
+  background-color: #D1D5DB; /* Tailwind gray-300 */
+}
 
 .accordion-item.even .accordion-header {
   
