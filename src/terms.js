@@ -2,11 +2,12 @@ import React from 'react';
 
 function TermsnCondition() {
   return (
-    <div style={{ paddingTop: '75px', paddingLeft: '100px', paddingRight: '100px', overflowY: 'auto', maxHeight: 'calc(120vh - 80px)' }}>
+    <div style={{ paddingTop: '80px', paddingLeft: '100px', paddingRight: '100px', overflowY: 'auto', maxHeight: 'calc(120vh - 80px)' }}>
       <center>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '30px' }}>Terms and Conditions</h2>
-      </center> <div style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
-
+      </center> 
+      <div style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', height: '600px', overflow: 'auto' }}>
+ 
         <div style={{ lineHeight: '1.6', textAlign: 'justify' }}>
           <p style={{ marginBottom: '10px' }}>
             <strong>Use of Services:</strong> By accessing or using our services, you agree to be bound by these terms.

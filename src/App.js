@@ -889,7 +889,7 @@ function App() {
           (!selectedParty || (item[1].metadata["Parties Involved"] && item[1].metadata["Parties Involved"].includes(selectedParty))) &&
           (!selectedCourt || (item[1].metadata["Court Name"] && item[1].metadata["Court Name"] === selectedCourt)) &&
           (!selectedJudge || item[1].metadata["Judges"] && item[1].metadata["Judges"].includes(selectedJudge)) &&
-          (!selectedDocumentType || (Array.isArray(item[1].metadata["Document Type"]) && item[1].metadata["Document Type"].some(type => type === selectedDocumentType))) &&
+          (!selectedDocumentType || (item[1].metadata["Document Type"]) && item[1].metadata["Document Type"].includes(selectedDocumentType)) &&
           (!selectedKeyword || (item[1].metadata.Keywords && item[1].metadata.Keywords.includes(selectedKeyword)))
       );
 
@@ -1253,14 +1253,18 @@ function App() {
   };
 
   // Fetch unique document types
-  const extractUniqueDocumentTypes = () => {
-    const documentTypes = new Set(results
-      .filter(item => Array.isArray(item[1].metadata["Document Type"]) && item[1].metadata["Document Type"].length > 0)
-      .flatMap(item => item[1].metadata["Document Type"])
-      .filter(type => typeof type === 'string' && type.trim() !== "")
-    );
-
-    // console.log(documentTypes)
+  // const extractUniqueDocumentTypes = () => {
+  //   const documentTypes = new Set(results
+  //     .filter(item => Array.isArray(item[1].metadata["Document Type"]) && item[1].metadata["Document Type"].length > 0)
+  //     .flatMap(item => item[1].metadata["Document Type"])
+  //     .filter(type => typeof type === 'string' && type.trim() !== "")
+  //   );
+    const extractUniqueDocumentTypes = () => {
+      const documentTypes = new Set(results.flatMap(item => item[1].metadata["Document Type"] || [])
+        .filter(type =>  type !== "")
+      );
+  
+    console.log(documentTypes)
     setUniqueDocumentTypes(Array.from(documentTypes)); // Convert Set to Array
   };
 
@@ -1270,7 +1274,7 @@ function App() {
       .filter(keyword => keyword !== "")
     );
 
-    // console.log(keywords)
+    console.log(keywords)
     setUniqueKeywords(Array.from(keywords)); // Convert Set to Array
   };
 
