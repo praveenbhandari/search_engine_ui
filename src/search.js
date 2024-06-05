@@ -5,6 +5,7 @@ import imag from './HRD.png'
 
 import LoginModal from "./login";
 
+import nopage from "./lottie/nopg.json";
 function Search_content({
 //   searchPerformed,
   setSelectedYear,

@@ -16,7 +16,7 @@ import ContactUs from "./contact_us";
 import TermsnCondition from "./terms";
 import PrivacyPolicy from "./privacy";
 import Pricing from "./Pricing";
-
+import Lottie from "lottie-react";
 
 import nopage from "./lottie/nopg.json";
 
@@ -1595,8 +1595,8 @@ function App() {
                     <div className="spinner-overlay">
                       <div className='spinner'>
 
-                        {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                        <ClipLoader size={150} color={"#123abc"} loading={loading} />
+                        <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                        {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
                       </div>
                     </div>
                     // <div className="loading-bar">
@@ -1873,8 +1873,8 @@ function App() {
                           <div className="spinner-overlay">
                             <div className='spinner'>
 
-                              {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                              <ClipLoader size={150} color={"#123abc"} loading={loading} />
+                              <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                              {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
                             </div>
                           </div>
                           // <div className="loading-bar">
@@ -2119,8 +2119,8 @@ function App() {
                 {loading ? (
                   <div className='spinner'>
 
-                    {/* <Lottie animationData={nopage} loop={true} renderer={'svg'} /> */}
-                    <ClipLoader size={150} color={"#123abc"} loading={loading} />
+                    <Lottie animationData={nopage} loop={true} renderer={'svg'} />
+                    {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
                   </div>
                   // <div className="loading-bar">
                   //   Loading...
