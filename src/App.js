@@ -1581,12 +1581,12 @@ function App() {
         <p className="text-center text-lg font-medium bg-#f8f8f8" style={{ color: '#2E2E2E' }}>List of Available Courts</p>
     </div>
     <div className="w-full text-center bg-#f8f8f8" style={{ color: '#2E2E2E' }}>
-        <p>International Court of Justice(ICJ) <strong>|</strong> European Court of Human Rights(HUDOC/ECHR) <strong>|</strong> International Criminal Court(ICC) <strong>|</strong> United Nations Committee Against Torture(UN CAT) <strong>|</strong></p>
-        <p>United Nations Committee on Economic, Social and Cultural Rights(UN CESCR) <strong>|</strong> United Nations Committee on the Elimination of Racial Discrimination(UN CERD) <strong>|</strong></p>
+        <p>International Court of Justice(ICJ) <strong>|</strong> European Court of Human Rights(HUDOC/ECHR) <strong>|</strong> International Criminal Court(ICC) <strong>|</strong> </p>
+        <p>United Nations Committee Against Torture(UN CAT) <strong>|</strong> United Nations Committee on Economic, Social and Cultural Rights(UN CESCR) <strong>|</strong> United Nations Committee on the Elimination of Racial Discrimination(UN CERD) <strong>|</strong></p>
         <p>United Nations Committee on the Rights of the Child(UN CRC) <strong>|</strong> United Nations Committee on the Rights of Persons with Disabilities(UN CRPD) <strong>|</strong></p>
         <p>United Nations Committee on the Elimination of Discrimination against Women(UN CEDAW)</p>
         <p></p>
-        <p>Committee on Enforced Disappearances(UN CED)<strong>|</strong></p>
+        <p>Committee on Enforced Disappearances(UN CED)</p>
     </div>
 </div>
 
