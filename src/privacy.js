@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+// import { Link, Routes, Route } from 'react-router-dom';
 // import Search_content from './search';
 import imag from './HRD.png'
 
@@ -19,7 +19,7 @@ function PrivacyPolicy(
     <center>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '30px' }}>Privacy Policy</h2>
         </center>  
-          <div style={{ backgroundColor: '#fff',height:'300px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
+          <div style={{ backgroundColor: '#fff',height:'340px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
     
         <div style={{ lineHeight: '1.6', textAlign: 'justify' }}>
           <p style={{ marginBottom: '20px' }}>

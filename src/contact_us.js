@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+// import { Link, Routes, Route } from 'react-router-dom';
 // import Search_content from './search';
 import imag from './HRD.png'
 import GoogleMapReact from 'google-map-react';

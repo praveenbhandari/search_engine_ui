@@ -100,7 +100,7 @@ nav p:not(:last-child)::after {
   border-radius: 10px;
   overflow: hidden;
   align-items: center;
-  width: 85%;
+  width: 1200px;
   height: calc(100vh - 155px); /* Adjust to fit within the viewport without scrolling */
  
   flex-direction: column;
