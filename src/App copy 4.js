@@ -21,7 +21,6 @@ import Lottie from "lottie-react";
 import nopage from "./lottie/nopg.json";
 
 import DesktopViewPrompt from './Desktopprompt';
-import Header from "./header";
 
 function formatDate(dateString) {
   if (!dateString || isNaN(Date.parse(dateString))) {
@@ -1380,16 +1379,17 @@ function App() {
   };
   return (
     <div>
-      {/* <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
+      <header className="text-gray-400 bg-#EBEBEB body-font" style={{ position: 'fixed', width: '100%', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#ebebeb', zIndex: 9999 }}>
         <div className="mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center justify-between" style={{ zIndex: 9999 }}>
-         
+          {/* Logo */}
+
           {(results || page !== "home") && (
             <div className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
               <img src={imag} alt="My Image" style={{ width: 'auto', height: '50px' }} onClick={() => { handlePageChange("home"); setResults(null)}} />
             </div>
           )}
 
-          
+          {/* Menu or User Actions */}
           <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-700 flex flex-wrap items-center text-base justify-between w-3/5">
             <p onClick={() => handlePageChange("about-us")} className="relative">About Us</p>
             <p onClick={() => handlePageChange("about-us")} className="relative">Contact Us</p>
@@ -1397,6 +1397,30 @@ function App() {
             <p onClick={() => handlePageChange("tnc")} className="relative">Terms & Conditions</p>
             <p onClick={() => handlePageChange("privacypolicy")} className="relative">Privacy Policy</p>
           </nav>
+
+
+          {/* User Login/Logout */}
+          {/* <div style={{ display: 'flex', alignItems: 'center' }}>
+            {user ? (
+              <div className="text-gray-900 mr-2">Welcome, {user.name}!</div>
+            ) : (
+              <button onClick={handleModalOpen} className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-green-700 rounded text-base mt-4 md:mt-0">
+                Login
+                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            )}
+
+            {user && (
+              <button onClick={logoutUser} className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-red-700 rounded text-white mt-2 md:mt-0">
+                Logout
+                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            )}
+          </div> */}
 
           <div style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 9999 }}>
             {user ? (
@@ -1421,7 +1445,7 @@ function App() {
                       <button
                         onClick={logoutUser}
                         className=" px-2 py-1 flex items-center justify-between border rounded-b-lg bg-red-600 focus:outline-none hover:bg-red-700 text-white w-full"
-                    
+                      //  style={{ padding: '0', borderRadius: '0 0 10px 10px' }}
                       >
                         Logout
                         <div >
@@ -1459,8 +1483,7 @@ function App() {
           </div>
 
         </div>
-      </header> */}
-      <Header/>
+      </header>
       <footer>
         <span>
           <button onClick={() => handlePageChange("home")}>Home</button>
@@ -1477,19 +1500,21 @@ function App() {
       <div className="feedback-wrapper">
         {isCollapsed ? (
           <div className="chatbot-icon" onClick={toggleCollapse}>
-
+            {/* Feedback */}
             <FeedbackIcon style={{ width: '50px', height: '50px' }} />
           </div>
         ) : (
           <div style={{ color: '#f8f8f8', backgroundColor: "#323232", width: "100%", borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}>
             <div className="close-icon" style={{ fontWeight: '20px', fontWeight: '20', padding: 5, alignContent: "start", borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }} onClick={toggleCollapse}>
-              &#x2715; 
+              &#x2715; {/* Unicode character for the cross icon */}
             </div>
           </div>
         )}
         <div className={`card-container ${isCollapsed ? 'collapsed' : ''}`}>
           <div className="card-body">
-           
+            {/* <div className="collapsible-header" onClick={toggleCollapse}> */}
+            {/* <span className={`collapse-icon ${isCollapsed ? 'collapsed' : ''}`}>&#9660;</span> */}
+            {/* </div> */}
             <div className={`collapsible-body ${isCollapsed ? 'collapsed' : ''}`}>
               <div className="bottom-input form-group">
                 <textarea
@@ -1571,9 +1596,12 @@ function App() {
                       <div className='spinner'>
 
                         <Lottie animationData={nopage} loop={true} renderer={'svg'} />
-                         </div>
+                        {/* <ClipLoader size={150} color={"#123abc"} loading={loading} /> */}
+                      </div>
                     </div>
-                   
+                    // <div className="loading-bar">
+                    //   Loading...
+                    // </div>
                   )}
 
                   {showSuggestions && suggestions.length > 0 && (
@@ -1584,7 +1612,7 @@ function App() {
                           onClick={() => {
                             setSearchQuery(searchQuery + " " + suggestion.token);
                           }}
-                          onMouseDown={(e) => e.preventDefault()} 
+                          onMouseDown={(e) => e.preventDefault()} // Prevent onBlur from firing on click
                         >
                           {suggestion.token}
                         </li>
@@ -1603,9 +1631,14 @@ function App() {
 
               {results && (
                 <div className="left-filters">
+                  {/* style={  {marginTop:'70px',width:'200px', position: 'fixed', top: '10px', left:'10px'}} */}
                   <div >
+                    {/* <div>
+                <img src={imag} alt="My Image" style={{ width: '150px', height: 'auto' }} />
+              </div> */}
                     {results && (
                       <div >
+                        {/* <div className="filter-title">Parties Involved</div> */}
                         <select
                           style={{ border: "1px solid", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedParty || ""}
@@ -1632,7 +1665,8 @@ function App() {
                           ))}
                         </select>
 
-                       <select
+                        {/* <div className="filter-title">Document Type</div> */}
+                        <select
                           style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedDocumentType || ""}
                           onChange={(e) => setSelectedDocumentType(e.target.value)}
@@ -1645,6 +1679,7 @@ function App() {
                           ))}
                         </select>
 
+                        {/* <div className="filter-title">Keyword</div> */}
                         <select
                           style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedKeyword || ""}
@@ -1657,6 +1692,8 @@ function App() {
                             </option>
                           ))}
                         </select>
+                        {/* <div className="filter-title">Month</div> */}
+                        {/* Date Filters */}
                         <select
                           style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedMonth || ""}
@@ -1669,6 +1706,9 @@ function App() {
                             </option>
                           ))}
                         </select>
+                        {/* ...other left-side filters if any... */}
+                        {/* <div className="filter-title">Year</div> */}
+                        {/* Date Filters */}
                         <select
                           style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedYear || ""}
@@ -1681,6 +1721,7 @@ function App() {
                             </option>
                           ))}
                         </select>
+                        {/* <div className="filter-title">Court Name</div> */}
                         <select
                           style={{ border: "1px solid black", borderColor: '#343434', color: '#343434', borderRadius: "10px" }}
                           value={selectedCourt || ""}
@@ -1696,7 +1737,8 @@ function App() {
 
 
 
-                      
+                        {/* ...other right-side filters if any... */}
+                        {/* </div> */}
                       </div>)
                     }
 
