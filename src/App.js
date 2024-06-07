@@ -10,7 +10,7 @@ import TermsnCondition from './terms';
 import PrivacyPolicy from './privacy';
 // import FeedbackIcon
 import axios from 'axios';
-
+import AppRoutes from "./Routes";
 import { ResultsContext } from "./resultContext";
 
 import Search_content from './search'; // Import your Search_content component
