@@ -34,6 +34,7 @@
     "react-icons": "^5.2.1",
     "react-lottie": "^1.2.4",
     "react-router-dom": "^6.23.1",
+    "react-router-sitemap": "^1.2.0",
     "react-scripts": "^5.0.1",
     "react-spinners": "^0.13.8",
     "save": "^2.9.0",
@@ -44,6 +45,10 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react": "18.2.38",
     "@types/react-dom": "18.0.9",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
     "eslint-plugin-react": "^7.33.2",
     "loader-utils": "3.2.1",
     "tailwindcss": "^3.4.3",
@@ -53,7 +58,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sitemap": "babel-node /Users/praveen/Desktop/search_engine_ui/public/sitemap-generator.js"
   },
   "browserslist": [
     ">0.2%",
