@@ -12,7 +12,7 @@ import PrivacyPolicy from './privacy';
 import axios from 'axios';
 import AppRoutes from "./Routes";
 import { ResultsContext } from "./resultContext";
-import '../public/sitemap.xml'
+// import './sitemap.xml' as sitemap
 import Search_content from './search'; // Import your Search_content component
 
 function App() {
@@ -122,10 +122,10 @@ function App() {
         <Route path="PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/*" element={<Home />} />
         <Route path="/sitemap.xml">
-          {() => {
-            window.location.href = 'https://humanrightsdossier.com/sitemap.xml';
-            return null;
-          }}
+        {() => {
+              window.location.href = '/sitemap.xml';
+              return null;
+            }}
         </Route>
       </Routes>
 
